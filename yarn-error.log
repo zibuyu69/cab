@@ -1,0 +1,58 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe E:\yarn\bin\yarn.js
+
+PATH: 
+  E:\comder\bin;E:\comder\vendor\conemu-maximus5\ConEmu\Scripts;E:\comder\vendor\conemu-maximus5;E:\comder\vendor\conemu-maximus5\ConEmu;E:\ORICAL\1\2\bin;C:\Program Files\Java\jdk1.8.0_131\bin;C:\windows\system32;C:\windows;C:\windows\System32\Wbem;C:\windows\System32\WindowsPowerShell\v1.0\;E:\SQLServer2012\110\DTS\Binn\;E:\SQL\110\Tools\Binn\;E:\SQLServer2012\110\Tools\Binn\;E:\SQL\110\Tools\Binn\ManagementStudio\;C:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE\PrivateAssemblies\;E:\SQL\110\DTS\Binn\;E:\TOMCAT\apache-tomcat-8.0.45\bin;E:\TOMCAT\apache-tomcat-8.0.45\lib;C:\Program Files\nodejs\;E:\yarn\bin\;C:\Users\Administrator\AppData\Local\Microsoft\WindowsApps;C:\Users\Administrator\AppData\Roaming\npm;C:\Users\Administrator\AppData\Local\GitHubDesktop\bin;C:\Users\Administrator\AppData\Local\Yarn\bin;E:\comder\vendor\git-for-windows\cmd;E:\comder\vendor\git-for-windows\bin;E:\comder
+
+Yarn version: 
+  1.5.1
+
+Node version: 
+  4.4.3
+
+Platform: 
+  win32 x64
+
+npm manifest: 
+  {
+    "private": true,
+    "scripts": {
+      "start": "umi dev",
+      "build": "umi build",
+      "lint": "eslint --ext .js src test",
+      "precommit": "npm run lint"
+    },
+    "dependencies": {
+      "dva": "^2.1.0",
+      "umi": "^1.0.0-0",
+      "umi-plugin-dva": "^0.1.5"
+    },
+    "devDependencies": {
+      "eslint": "^4.14.0",
+      "eslint-config-umi": "^0.1.1",
+      "eslint-plugin-flowtype": "^2.34.1",
+      "eslint-plugin-import": "^2.6.0",
+      "eslint-plugin-jsx-a11y": "^5.1.1",
+      "eslint-plugin-react": "^7.1.0",
+      "husky": "^0.12.0"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
+
+Trace: 
+  Error: Found incompatible module
+      at MessageError.Error (native)
+      at new MessageError (E:\yarn\lib\cli.js:186:110)
+      at checkOne (E:\yarn\lib\cli.js:62444:11)
+      at Object.check (E:\yarn\lib\cli.js:62463:5)
+      at E:\yarn\lib\cli.js:22803:73
+      at next (native)
+      at step (E:\yarn\lib\cli.js:98:30)
+      at E:\yarn\lib\cli.js:109:13
+      at run (E:\yarn\lib\cli.js:100334:22)
+      at E:\yarn\lib\cli.js:100347:28
