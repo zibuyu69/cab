@@ -20,7 +20,7 @@ class Layouts extends React.Component {
         <Content style={{ padding: "0 0 0 0" }}>{this.props.children}</Content>
 
         <Footer style={{ textAlign: "center" , height:"60px"}}>
-        顺丰快递快递柜© 2017  顺丰速运  版权所有    粤  ICP  备08034243号      
+        顺丰快递快递柜© 2017  顺丰速运  版权所有    粤  ICP  备08034243号
         </Footer>
       </Layout>
     );

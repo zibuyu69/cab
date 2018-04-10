@@ -14,6 +14,9 @@ class Index extends React.Component {
 }, {
   title: '快递单号',
   dataIndex: 'address',
+}, {
+  title: '最后期限',
+  dataIndex: 'address',
 }];
 const data = [{
   key: '1',

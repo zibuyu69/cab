@@ -26,6 +26,10 @@ export default {
     *fetch({ payload }, { call, put }) {
       yield put({ type: "save", payload });
     },
+    *login({ payload }, { call, put }) {
+      console.log(payload);
+      yield put({ type: "save", payload });
+    },
     // 根据下滚条，进行读取数据
     *nextPage({ payload }, { call, put, select }) {
       const { page, blogList } = yield select(store => store.index);

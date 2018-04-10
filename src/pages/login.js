@@ -15,6 +15,19 @@ import { connect } from "dva";
 const FormItem = Form.Item;
 
 class Index extends React.Component {
+  handleSubmit = e => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        console.log(this.props);
+        console.log("Received values of form: ", values);
+        this.props.dispatch({
+          type: "index/login",
+          payload: values
+        });
+      }
+    });
+  };
   render() {
     const windowHight = document.documentElement.clientHeight;
     const { getFieldDecorator } = this.props.form;
@@ -23,9 +36,11 @@ class Index extends React.Component {
         style={{ padding: "60px 12%", height: windowHight - 60 }}
         className="bac_img"
       >
-
-
-        <Form onSubmit={this.handleSubmit} style={{margin:"0px auto", width:"40%"}} >
+        <card>
+        <Form
+          onSubmit={this.handleSubmit}
+          style={{ margin: "0px auto", width: "40%" ,opacity: "0.9"}}
+        >
           <FormItem>
             {getFieldDecorator("userName", {
               rules: [
@@ -56,19 +71,19 @@ class Index extends React.Component {
             )}
           </FormItem>
           <FormItem>
-
             <Button
               type="primary"
               htmlType="submit"
               className="login-form-button"
             >
-            登录
+              登录
             </Button>
-
+            <Button type="primary" className="login-form-button">
+              返回
+            </Button>
           </FormItem>
         </Form>
-
-
+      </card>
       </div>
     );
   }
