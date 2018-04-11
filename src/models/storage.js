@@ -4,9 +4,9 @@ import { message } from "antd";
 export default {
   namespace: "storage",
   state: {
-    phoneNumber:'',
-    number:'',
-    boxNumber:'',
+    phoneNumber: "",
+    number: "",
+    boxNumber: ""
   },
   // 访问 redux
   reducers: {
@@ -28,4 +28,27 @@ export default {
       });
     }
   },
+  //页面加载或者跳转路由执行的方法
+  subscriptions: {
+    setup({ dispatch, history }) {
+      history.listen(location => {
+        if (location.pathname === "/") {
+          // 获取 帖子列表
+          dispatch({
+            type: "getBlogList",
+            payload: {
+              pageNum: 1,
+              pageSize: 10,
+              key: "123"
+            }
+          });
+          // 获取当前 session 的用户基本信息
+          dispatch({
+            type: "getUserInfo",
+            payload: {}
+          });
+        }
+      });
+    }
+  }
 };

@@ -3,16 +3,8 @@ import { getUserBySession } from "../services/common";
 import { message } from "antd";
 export default {
   namespace: "login",
-
   state: {
-    userInfoList: {}, // 用户个人信息集合
-    blogList: [], // 获取到的帖子集合
-    listenerFlag: true, // 划到最下面的加载标记
-    pageEndFlag: false, // 页面拉到底的判定
-    page: {
-      pageNum: 1,
-      pageSize: 10
-    }
+
   },
   // 访问 redux
   reducers: {
@@ -28,13 +20,11 @@ export default {
     },
     *login({ payload }, { call, put }) {
       console.log(payload);
-      yield put({ type: "save", payload });
-    },
-    // 根据下滚条，进行读取数据
-
-    // 获取登陆者的基本信息，来判断是否登录
-
-    // 获取Blog 列表
+      yield put({
+        type: "save",
+        payload
+      });
+    }
   },
   //页面加载或者跳转路由执行的方法
   subscriptions: {

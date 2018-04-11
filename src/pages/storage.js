@@ -3,39 +3,37 @@ import { Layout, Menu, Row, Col, Card, Button, Input } from "antd";
 import { connect } from "dva";
 
 class Index extends React.Component {
-  open=()=>{
-      console.log(this.props.storage);
-  }
+  open = () => {
+    console.log(this.props.storage);
+  };
 
-  onChange = (value,type) =>{
+  onChange = (value, type) => {
     console.log(value.target.value);
-    if ( type == "phoneNumber"){
+    if (type === "phoneNumber") {
       this.props.dispatch({
-        type:'storage/saveNumbers',
-        payload:{
+        type: "storage/saveNumbers",
+        payload: {
           phoneNumber: value.target.value
         }
-      })
+      });
     }
-    if ( type == "number"){
+    if (type ==="number") {
       this.props.dispatch({
-        type:'storage/saveNumbers',
-        payload:{
+        type: "storage/saveNumbers",
+        payload: {
           number: value.target.value
         }
-      })
+      });
     }
-    if ( type == "boxNumber"){
+    if (type === "boxNumber") {
       this.props.dispatch({
-        type:'storage/saveNumbers',
-        payload:{
+        type: "storage/saveNumbers",
+        payload: {
           boxNumber: value.target.value
         }
-      })
+      });
     }
-
-
-  }
+  };
   render() {
     const windowHight = document.documentElement.clientHeight;
     return (
@@ -44,14 +42,35 @@ class Index extends React.Component {
         className="bac1_img"
       >
         <div className="message_box">
-          <p>收件人账号</p> <Input onChange={(value)=>this.onChange(value,"phoneNumber")} placeholder="请输入收件人手机号" /><br/><br/>
-          <p>快递单号</p> <Input onChange={(value)=>this.onChange(value,"number")} placeholder="请输入快递单号" /><br/><br/>
-          <p>柜门号</p> <Input onChange={(value)=>this.onChange(value,"boxNumber")} placeholder="请输入快递需要的柜门号" /><br/>
+          <p>收件人账号</p>{" "}
+          <Input
+            onChange={value => this.onChange(value, "phoneNumber")}
+            placeholder="请输入收件人手机号"
+          />
+          <br />
+          <br />
+          <p>快递单号</p>{" "}
+          <Input
+            onChange={value => this.onChange(value, "number")}
+            placeholder="请输入快递单号"
+          />
+          <br />
+          <br />
+          <p>柜门号</p>{" "}
+          <Input
+            onChange={value => this.onChange(value, "boxNumber")}
+            placeholder="请输入快递需要的柜门号"
+          />
+          <br />
           <br />
           <br />
           <br />
           <div className="button_margin">
-            <Button type="primary" className="button_margin" onClick={this.open}>
+            <Button
+              type="primary"
+              className="button_margin"
+              onClick={this.open}
+            >
               打开柜门
             </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <Button type="primary" className="button_margin">

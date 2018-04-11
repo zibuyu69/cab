@@ -3,6 +3,9 @@ import { Layout, Menu, Row, Col, Card, Button, Input, Table } from "antd";
 import { connect } from "dva";
 
 class Index extends React.Component {
+  open = () => {
+    console.log(this.props.find);
+  };
   render() {
     const windowHight = document.documentElement.clientHeight;
     const Search = Input.Search;
@@ -87,7 +90,7 @@ class Index extends React.Component {
           dataSource={data}
         />
         <div className="button_margin">
-          <Button type="primary">打开柜门</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button type="primary"   onClick={this.open}>打开柜门</Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           <Button type="primary" className="button_margin">
             退出
           </Button>
@@ -98,7 +101,7 @@ class Index extends React.Component {
 }
 // mapStateToProps内的参数需与model里的namespace一致
 function mapStateToProps(state) {
-  const index = state.index;
-  return { index, loading: state.loading.models.prototype };
+  const find = state.find;
+  return { find, loading: state.loading.models.prototype };
 }
 export default connect(mapStateToProps)(Index);
