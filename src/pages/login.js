@@ -1,28 +1,23 @@
 import React from "react";
 import {
-  Layout,
-  Menu,
-  Row,
-  Col,
-  Card,
   Button,
   Form,
   Icon,
   Input,
-  Checkbox
 } from "antd";
 import { connect } from "dva";
+
 const FormItem = Form.Item;
 
 class Index extends React.Component {
   handleSubmit = e => {
-    e.preventDefault();
+    e.preventDefault();//固定格式
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log(this.props);
         console.log("Received values of form: ", values);
         this.props.dispatch({
-          type: "index/login",
+          type: "login/login",
           payload: values
         });
       }
