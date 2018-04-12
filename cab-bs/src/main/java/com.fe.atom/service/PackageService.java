@@ -7,5 +7,9 @@ import java.util.List;
 
 public interface PackageService {
   public List<Package> queryPackages(String queryWord, WebPage webPage, String type, String phone_number, String searchValue);
+  public Integer queryPackagesNum(String queryWord, WebPage webPage, String type, String phone_number, String searchValue);
   public boolean insertPackage(Package packages);
+  public boolean update(Package packages);
+  public boolean pickupPackage(List<String> ids);
+
 }

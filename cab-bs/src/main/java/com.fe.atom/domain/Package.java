@@ -1,5 +1,7 @@
 package com.fe.atom.domain;
 
+import java.sql.Date;
+
 /**
  * @classDesc: Package
  * @Author: Knove
@@ -27,6 +29,10 @@ public class Package {
    *  快递单号
    */
   private String pa_no;
+  /**
+   *  最后时间
+   */
+  private Date last_time;
 
   public String getPa_id() {
     return pa_id;
@@ -66,5 +72,13 @@ public class Package {
 
   public void setPa_no(String pa_no) {
     this.pa_no = pa_no;
+  }
+
+  public Date getLast_time() {
+    return last_time;
+  }
+
+  public void setLast_time(Date last_time) {
+    this.last_time = last_time;
   }
 }

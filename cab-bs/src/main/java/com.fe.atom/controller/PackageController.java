@@ -17,6 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import java.lang.reflect.Array;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -36,19 +39,24 @@ public class PackageController {
   @Autowired
   private PackageService packageService;
   @PostMapping("/getList")
-  public ServerResponse<List<Package>> getList(@RequestBody Map<String,String> data, HttpSession session) throws Exception {
+  public ServerResponse<Map> getList(@RequestBody Map<String,String> data, HttpSession session) throws Exception {
     PLOG.info("   getList   ————     接收到data  =>>>>  " + data);
     WebPage webPage = new WebPage(Integer.parseInt(data.get("pageNum")),Integer.parseInt(data.get("pageSize")));
     PLOG.info("   getList   ————     接收到webPage =>>>>  " + webPage.getPageno() + webPage.getRowcount());
     List<Package> packages = null;
     UserDTO userDTOs = (UserDTO)session.getAttribute("userInfo");
-    PLOG.info("   insertBlog   ————     根据session 获取当前的用户  =>>>>  "+userDTOs);
+    PLOG.info("   getList   ————     根据session 获取当前的用户  =>>>>  "+userDTOs);
     if(StringUtils.isEmpty(userDTOs)){
       // 登陆过期 必传此
       return ServerResponse.createByErrorCodeMessage(ResponseCode.SESSIONFAILD.getCode(),ResponseCode.SESSIONFAILD.getDesc());
     }
     packages = packageService.queryPackages(data.get("key"), webPage,data.get("type"), userDTOs.getPhoneNumber(), data.get("searchValue"));
-    return ServerResponse.createBySuccess(packages);
+    int total = packageService.queryPackagesNum(data.get("key"), webPage,data.get("type"), userDTOs.getPhoneNumber(), data.get("searchValue"));
+    webPage.setTotal(total);
+    Map map=new HashMap();
+    map.put("data",packages);
+    map.put("pageInfo", webPage);
+    return ServerResponse.createBySuccess(map);
   }
   @PostMapping("/storage")
   public ServerResponse<Boolean> storage(@RequestBody Package packages) throws Exception {
@@ -58,5 +66,24 @@ public class PackageController {
     }
     boolean insertFlag = packageService.insertPackage(packages);
     return ServerResponse.createBySuccess(insertFlag);
+  }
+  @PostMapping("/pickup")
+  public ServerResponse<Boolean> pickup(@RequestBody Map<String,String[]> data) throws Exception {
+    String[] boxNumberList = data.get("boxNumberList");
+    PLOG.info("   pickup   ————     接收到ids  =>>>>  " + boxNumberList);
+    if (boxNumberList.length <= 0){
+      return ServerResponse.createByErrorCodeMessage(ResponseCode.NULLPOINT.getCode(),ResponseCode.NULLPOINT.getDesc());
+    }
+    boolean deleteFlag = packageService.pickupPackage(Arrays.asList(boxNumberList));
+    return ServerResponse.createBySuccess(deleteFlag);
+  }
+  @PostMapping("/update")
+  public ServerResponse<Boolean> update(@RequestBody Package packages) throws Exception {
+    PLOG.info("   update   ————     接收到Package  =>>>>  " + packages);
+    if (StringUtils.isEmpty(packages.getPa_no())) {
+      return ServerResponse.createByErrorCodeMessage(ResponseCode.NULLPOINT.getCode(), ResponseCode.NULLPOINT.getDesc());
+    }
+    boolean updateFlag = packageService.update(packages);
+    return ServerResponse.createBySuccess(updateFlag);
   }
 }

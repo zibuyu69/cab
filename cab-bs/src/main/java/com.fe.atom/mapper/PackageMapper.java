@@ -11,7 +11,15 @@ public interface PackageMapper {
 
   List<Package> getPackagesByPhoneNumber(@Param("map") Map<String, Object> queryMap, @Param("pageNum") int pageNum, @Param("pageSize") int pageSize, @Param("orderby") String order);
 
+  Integer getAllPackagesNum(@Param("map") Map<String, Object> queryMap, @Param("pageNum") int pageNum, @Param("pageSize") int pageSize, @Param("orderby") String order);
+
+  Integer getPackagesByPhoneNumberNum(@Param("map") Map<String, Object> queryMap, @Param("pageNum") int pageNum, @Param("pageSize") int pageSize, @Param("orderby") String order);
+
   boolean insertPackage(Package packages);
 
   Package getPackageByBoxId(String box_no);
+
+  boolean deletePackages(List<String> ids);
+
+  boolean update(Package packages);
 }

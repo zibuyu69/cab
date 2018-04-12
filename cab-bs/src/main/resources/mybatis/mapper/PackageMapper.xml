@@ -6,12 +6,30 @@
         <result column="score" property="score" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
-        pa_id,phone_number,box_no,pa_no,username
+        pa_id,phone_number,box_no,pa_no,username,last_time
     </sql>
+
+  <select id="getAllPackagesNum" resultType="int" >
+    SELECT
+    count(*)
+    FROM cab_package
+    <if test="map.searchValue != null">
+      WHERE pa_no LIKE CONCAT('%',#{map.searchValue},'%')
+    </if>
+  </select>
+  <select id="getPackagesByPhoneNumberNum" resultType="int" >
+    SELECT
+    count(*)
+    FROM cab_package WHERE phone_number = (#{map.phone_number})
+  </select>
+
     <select id="getAllPackages" resultType="com.fe.atom.domain.Package" >
         SELECT
         <include refid="Base_Column_List" />
-        FROM cab_package WHERE pa_no LIKE CONCAT('%',#{map.searchValue},'%')
+        FROM cab_package
+      <if test="map.searchValue != null">
+        WHERE pa_no LIKE CONCAT('%',#{map.searchValue},'%')
+      </if>
     </select>
 
   <select id="getPackagesByPhoneNumber" resultType="com.fe.atom.domain.Package" >
@@ -21,7 +39,7 @@
   </select>
 
     <insert id="insertPackage" parameterType="Package">
-       INSERT  INTO cab_package (pa_id,phone_number,box_no,pa_no,username) VALUES (#{pa_id},#{phone_number},#{box_no},#{pa_no},#{username})
+       INSERT  INTO cab_package (pa_id,phone_number,box_no,pa_no,username,last_time) VALUES (#{pa_id},#{phone_number},#{box_no},#{pa_no},#{username},#{last_time})
     </insert>
 
   <select id="getPackageByBoxId" resultType="Package" >
@@ -30,5 +48,17 @@
     FROM cab_package where box_no = (#{box_no})
   </select>
 
+  <delete id="deletePackages" parameterType="java.util.ArrayList">
+    DELETE  FROM cab_package <where>
+    pa_no in(
+    <foreach collection="list" item="id" index="index" separator=",">
+      #{id}
+    </foreach>
+    )
+  </where>
+  </delete>
 
+  <update id="update" parameterType="Package">
+    UPDATE cab_package SET phone_number = (#{phone_number}), box_no = (#{box_no}), pa_no = (#{pa_no}),username = (#{username}), last_time = (#{last_time})  WHERE pa_id = (#{pa_id})
+  </update>
 </mapper>

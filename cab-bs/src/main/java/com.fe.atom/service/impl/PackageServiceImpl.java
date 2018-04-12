@@ -81,24 +81,54 @@ public class PackageServiceImpl implements PackageService {
       package1.setPhone_number(packages.getPhone_number());
       package1.setBox_no(packages.getBox_no());
       package1.setUsername(user_name);
+      package1.setLast_time(packages.getLast_time());
       packagesDTO.add(package1);
     }
     return packagesDTO;
   }
 
+  public Integer queryPackagesNum (String queryWord, WebPage webPage, String type, String phone_number, String searchValue) {
+    Map<String, Object> queryMap = new HashMap<String, Object>();
+    queryMap.put("key", queryWord);
+    queryMap.put("phone_number", phone_number);
+    queryMap.put("searchValue", searchValue);
+    int total = 0;
+    if("1".equals(type)) {
+      total = packageMapper.getAllPackagesNum(queryMap,1,webPage.getRowcount(),"");
+    } else {
+      total = packageMapper.getPackagesByPhoneNumberNum(queryMap,1,webPage.getRowcount(),"");
+    }
+    return total;
+  }
   @Override
   public boolean insertPackage(Package packages) {
     // 获取 UUID 唯一标识
     String id = UUID.randomUUID().toString().replace("-", "");
-    // 获取当前时间
-    Date nowTime = new Date(new java.util.Date().getTime());
+    // 获取一天后的时间
+    Date nowTime = new Date(new java.util.Date().getTime() + 1000 * 60 * 60 * 24 * 2);
     Package packageVO = packageMapper.getPackageByBoxId(packages.getBox_no());
 
     if(StringUtils.isEmpty(packageVO)){
       // 装箱
       packages.setPa_id(id);
+      packages.setLast_time(nowTime);
       return packageMapper.insertPackage(packages);
     }
     return false;
+  }
+
+  @Override
+  public boolean update(Package packages) {
+    Package packageVO = packageMapper.getPackageByBoxId(packages.getBox_no());
+    // 如果 目标柜 不存在东西  或者 柜 没有改变
+    if(StringUtils.isEmpty(packageVO) || packages.getBox_no().equals(packageVO.getBox_no())) {
+      return packageMapper.update(packages);
+    }
+    return false;
+  }
+
+  @Override
+  public boolean pickupPackage(List<String> ids) {
+    return packageMapper.deletePackages(ids);
   }
 }
