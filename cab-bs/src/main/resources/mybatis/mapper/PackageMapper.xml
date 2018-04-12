@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fe.atom.mapper.PackageMapper">
+    <resultMap id="BaseResultMap" type="com.fe.atom.domain.User">
+        <result column="user_name" property="user_name" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        pa_id,phone_number,box_no,pa_no,username
+    </sql>
+    <select id="getAllPackages" resultType="com.fe.atom.domain.Package" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM cab_package WHERE pa_no LIKE CONCAT('%',#{map.searchValue},'%')
+    </select>
+
+  <select id="getPackagesByPhoneNumber" resultType="com.fe.atom.domain.Package" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cab_package WHERE phone_number = (#{map.phone_number})
+  </select>
+
+    <insert id="insertPackage" parameterType="Package">
+       INSERT  INTO cab_package (pa_id,phone_number,box_no,pa_no,username) VALUES (#{pa_id},#{phone_number},#{box_no},#{pa_no},#{username})
+    </insert>
+
+  <select id="getPackageByBoxId" resultType="Package" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cab_package where box_no = (#{box_no})
+  </select>
+
+
+</mapper>

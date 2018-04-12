@@ -19,5 +19,7 @@ public interface UserMapper{
 
     User getUserById(String Id);
 
-    User getUserByUserName(String user_name);
+    User getUserByUserName(String phone_number);
+
+    User getUserByPhoneNumber(String user_name);
 }

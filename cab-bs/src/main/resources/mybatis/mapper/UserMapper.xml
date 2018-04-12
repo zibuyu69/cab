@@ -6,18 +6,18 @@
         <result column="score" property="score" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
-        user_id, user_name,password,user_text, score, permission, registe_date, last_login_date
+        user_id,phone_number,password,username
     </sql>
     <insert id="insert" parameterType="com.fe.atom.domain.User">
-        INSERT INTO atom_user (name,age) VALUES (#{name}, #{age})
+        INSERT INTO cab_user (name,age) VALUES (#{name}, #{age})
     </insert>
     <select id="getAllUsers" resultType="com.fe.atom.domain.User" >
         SELECT
         <include refid="Base_Column_List" />
-        FROM atom_user
+        FROM cab_user
     </select>
     <delete id="deleteUsers" parameterType="java.util.ArrayList">
-        delete from atom_user
+        delete from cab_user
         <where>
         user_id in(
             <foreach collection="list" item="id" index="index" separator=",">
@@ -27,15 +27,18 @@
         </where>
     </delete>
     <select id="getUserById" parameterType="string" resultType="com.fe.atom.domain.User" >
-        SELECT <include refid="Base_Column_List" /> FROM atom_user WHERE user_id = (#{id})
+        SELECT <include refid="Base_Column_List" /> FROM cab_user WHERE user_id = (#{id})
     </select>
     <select id="getUserByUserName" parameterType="string" resultType="com.fe.atom.domain.User" >
-        SELECT <include refid="Base_Column_List" /> FROM atom_user WHERE user_name = (#{user_name})
+        SELECT <include refid="Base_Column_List" /> FROM cab_user WHERE user_name = (#{user_name})
     </select>
+  <select id="getUserByPhoneNumber" parameterType="string" resultType="com.fe.atom.domain.User" >
+    SELECT <include refid="Base_Column_List" /> FROM cab_user WHERE phone_number = (#{phone_number})
+  </select>
     <insert id="insertUser" parameterType="User">
-       INSERT  INTO atom_user (user_id,user_name,password,registe_date) VALUES (#{user_id},#{user_name},#{password},#{registe_date})
+       INSERT  INTO cab_user (user_id,phone_number,password,username) VALUES (#{user_id},#{phone_number},#{password},#{username})
     </insert>
     <update id="updateUser" parameterType="User">
-        UPDATE atom_user SET password = (#{password}), score = (#{score}), permission = (#{permission}), last_login_date = (#{last_login_date})  WHERE user_id = (#{user_id})
+        UPDATE cab_user SET password = (#{password}), score = (#{score}), permission = (#{permission}), last_login_date = (#{last_login_date})  WHERE user_id = (#{user_id})
     </update>
 </mapper>

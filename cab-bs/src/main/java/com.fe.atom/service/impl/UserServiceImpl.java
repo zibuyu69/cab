@@ -35,9 +35,6 @@ public class UserServiceImpl implements UserService {
         User userVO = userMapper.getUserById(id);
         UserDTO user = new UserDTO();
         user.setUserId(userVO.getUser_id());
-        user.setUserName(userVO.getUser_name());
-        user.setScore(userVO.getScore());
-        user.setUserText(userVO.getUser_text());
         return user;
     }
     @Override
@@ -70,8 +67,7 @@ public class UserServiceImpl implements UserService {
         for (User user : userVO) {
             UserDTO user1 = new UserDTO();
             user1.setUserId(user.getUser_id());
-            user1.setUserName(user.getUser_name());
-            user1.setScore(user.getScore());
+            user1.setUserName(user.getUsername());
             users.add(user1);
         }
         return users;
@@ -82,10 +78,8 @@ public class UserServiceImpl implements UserService {
         String id = UUID.randomUUID().toString().replace("-", "");
         // 获取当前时间
         Date nowTime = new Date(new java.util.Date().getTime());
-
         // 装箱
         user.setUser_id(id);
-        user.setRegiste_date(nowTime);
         // MD5 加密
         String password = DigestUtils.md5Hex(user.getPassword());
         user.setPassword(password);
@@ -95,22 +89,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updateUser(User user,String id) {
         User updateUser = userMapper.getUserById(user.getUser_id());
-        if (!StringUtils.isEmpty(user.getPassword())) {
-            String password = user.getPassword();
-            updateUser.setPassword(password);
-        }
-        if (!StringUtils.isEmpty(user.getScore())) {
-            int score = user.getScore();
-            updateUser.setScore(score);
-        }
-        if (!StringUtils.isEmpty(user.getPermission())) {
-            int permission = user.getPermission();
-            updateUser.setPermission(permission);
-        }
-        if (!StringUtils.isEmpty(user.getLast_login_date())) {
-            Date date = user.getLast_login_date();
-            updateUser.setLast_login_date(date);
-        }
         return userMapper.updateUser(updateUser);
     }
 
@@ -121,14 +99,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO login(User user) {
-        User userVO = userMapper.getUserByUserName(user.getUser_name());
+        User userVO = userMapper.getUserByPhoneNumber(user.getPhone_number());
         // MD5 加密
         String password = DigestUtils.md5Hex(user.getPassword());
         if(!StringUtils.isEmpty(userVO) && password.equals(userVO.getPassword())){
             UserDTO userdto = new UserDTO();
             userdto.setUserId(userVO.getUser_id());
-            userdto.setUserName(userVO.getUser_name());
-            userdto.setScore(userVO.getScore());
+            userdto.setUserName(userVO.getUsername());
+            userdto.setPhoneNumber(userVO.getPhone_number());
             return userdto;
         }
         return null;

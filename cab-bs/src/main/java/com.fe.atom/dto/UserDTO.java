@@ -11,43 +11,29 @@ import java.io.Serializable;
 public class UserDTO implements Serializable {
     private String userId;
     private String userName;
-    private String userText;
-    private Integer score;
+    private String phoneNumber;
 
-    public String getUserId() {
-        return userId;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+  public void setUserId(String userId) {
+    this.userId = userId;
+  }
 
-    public String getUserName() {
-        return userName;
-    }
+  public String getUserName() {
+    return userName;
+  }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+  public void setUserName(String userName) {
+    this.userName = userName;
+  }
 
-    public String getUserText() {
-        return userText;
-    }
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
 
-    public void setUserText(String userText) {
-        this.userText = userText;
-    }
-
-    public Integer getScore() {
-        return score;
-    }
-
-    public void setScore(Integer score) {
-        this.score = score;
-    }
-
-    @Override
-    public String toString() {
-        return "User: " + this.userId + "____" + this.userName + "____" + this.score;
-    }
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
 }

@@ -38,19 +38,19 @@ public class UserController {
 
     @PostMapping("/login")
     public ServerResponse<UserDTO> login(@RequestBody User user, HttpSession session) throws Exception {
-        String user_name = user.getUsername();
+        String phone_number = user.getPhone_number();
         String password = user.getPassword();
-        PLOG.info("   login   ————     登录操作，接收到用户名  =>>>>  " + user_name);
-        if (StringUtils.isEmpty(user_name) || StringUtils.isEmpty(password)) {
+        PLOG.info("   login   ————     登录操作，接收到用户手机号  =>>>>  " + phone_number);
+        if (StringUtils.isEmpty(phone_number) || StringUtils.isEmpty(password)) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NULLPOINT.getCode(), ResponseCode.NULLPOINT.getDesc());
         }
         UserDTO userDTO = userService.login(user);
         if(!StringUtils.isEmpty(userDTO)){
             // 登录成功
-            session.setAttribute("user_name", userDTO);
+            session.setAttribute("userInfo", userDTO);
             // session 存在一天
             session.setMaxInactiveInterval( 60 * 60 * 24 );
-            UserDTO userDTOs = (UserDTO)session.getAttribute("user_name");
+            UserDTO userDTOs = (UserDTO)session.getAttribute("userInfo");
             return ServerResponse.createBySuccess(userDTO);
         }
         return ServerResponse.createByErrorCodeMessage(ResponseCode.LOGINFAILD.getCode(), ResponseCode.LOGINFAILD.getDesc());
@@ -98,7 +98,7 @@ public class UserController {
     @PostMapping("/insertUser")
     public ServerResponse<Boolean> insertUser(@RequestBody User user) throws Exception {
         PLOG.info("   getUsers   ————     接收到user  =>>>>  " + user);
-        if (StringUtils.isEmpty(user.getUser_name()) || StringUtils.isEmpty(user.getPassword())) {
+        if (StringUtils.isEmpty(user.getUsername()) || StringUtils.isEmpty(user.getPassword())) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NULLPOINT.getCode(), ResponseCode.NULLPOINT.getDesc());
         }
         boolean insertFlag = userService.insertUser(user);

@@ -12,15 +12,19 @@ public class Package {
    */
   private String pa_id;
   /**
-   *  用户id
+   *  用户手机号
    */
-  private String user_id;
+  private String phone_number;
+  /**
+   *  用户名
+   */
+  private String username;
   /**
    *  快递柜单号
    */
   private String box_no;
   /**
-   *  快递柜单号
+   *  快递单号
    */
   private String pa_no;
 
@@ -32,12 +36,20 @@ public class Package {
     this.pa_id = pa_id;
   }
 
-  public String getUser_id() {
-    return user_id;
+  public String getPhone_number() {
+    return phone_number;
   }
 
-  public void setUser_id(String user_id) {
-    this.user_id = user_id;
+  public void setPhone_number(String phone_number) {
+    this.phone_number = phone_number;
+  }
+
+  public String getUsername() {
+    return username;
+  }
+
+  public void setUsername(String username) {
+    this.username = username;
   }
 
   public String getBox_no() {
