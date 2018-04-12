@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fe.atom.mapper.ChatBoxMapper">
+    <sql id="Base_Column_List" >
+        user_id, target_id, chatbox_type, chatbox_text, chatbox_date
+    </sql>
+    <select id="getChatBox" resultType="com.fe.atom.domain.ChatBox" >
+    SELECT <include refid="Base_Column_List" /> FROM atom_chatbox WHERE target_id = (#{id}) AND chatbox_type = (#{type})
+    </select>
+    <insert id="insertChatBox" parameterType="com.fe.atom.domain.ChatBox">
+        INSERT  INTO atom_chatbox(user_id,target_id, chatbox_type ,chatbox_text ,chatbox_date) VALUES (#{user_id},#{target_id},#{chatbox_type},#{chatbox_text},#{chatbox_date} )
+    </insert>
+    <select id="getChatBoxNumberFromBlog" parameterType="string" resultType="int" >
+        SELECT count(*) FROM atom_chatbox WHERE target_id = (#{id})
+    </select>
+</mapper>

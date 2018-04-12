@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fe.atom.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.fe.atom.domain.User">
+        <result column="user_name" property="user_name" jdbcType="VARCHAR"/>
+        <result column="score" property="score" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List" >
+        user_id, user_name,password,user_text, score, permission, registe_date, last_login_date
+    </sql>
+    <insert id="insert" parameterType="com.fe.atom.domain.User">
+        INSERT INTO atom_user (name,age) VALUES (#{name}, #{age})
+    </insert>
+    <select id="getAllUsers" resultType="com.fe.atom.domain.User" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM atom_user
+    </select>
+    <delete id="deleteUsers" parameterType="java.util.ArrayList">
+        delete from atom_user
+        <where>
+        user_id in(
+            <foreach collection="list" item="id" index="index" separator=",">
+                #{id}
+            </foreach>
+            )
+        </where>
+    </delete>
+    <select id="getUserById" parameterType="string" resultType="com.fe.atom.domain.User" >
+        SELECT <include refid="Base_Column_List" /> FROM atom_user WHERE user_id = (#{id})
+    </select>
+    <select id="getUserByUserName" parameterType="string" resultType="com.fe.atom.domain.User" >
+        SELECT <include refid="Base_Column_List" /> FROM atom_user WHERE user_name = (#{user_name})
+    </select>
+    <insert id="insertUser" parameterType="User">
+       INSERT  INTO atom_user (user_id,user_name,password,registe_date) VALUES (#{user_id},#{user_name},#{password},#{registe_date})
+    </insert>
+    <update id="updateUser" parameterType="User">
+        UPDATE atom_user SET password = (#{password}), score = (#{score}), permission = (#{permission}), last_login_date = (#{last_login_date})  WHERE user_id = (#{user_id})
+    </update>
+</mapper>

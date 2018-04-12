@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fe.atom.mapper.BlogMapper">
+    <sql id="Base_Column_List" >
+        blog_id, user_id, blog_name,blog_text,blog_type,prvite,show_date
+    </sql>
+    <select id="getAllBlogs" resultType="com.fe.atom.domain.Blog" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM atom_blog
+    </select>
+    <insert id="insertBlog" parameterType="Blog">
+       INSERT  INTO atom_blog (blog_id,user_id, blog_name,blog_text,blog_type, prvite,show_date) VALUES (#{blog_id},#{user_id},#{blog_name},#{blog_text},#{blog_type}, #{prvite},#{show_date} )
+    </insert>
+    <delete id="deleteBlogs" parameterType="java.util.ArrayList">
+        DELETE  FROM atom_blog <where>
+        blog_id in(
+        <foreach collection="list" item="id" index="index" separator=",">
+          #{id}
+        </foreach>
+        )
+    </where>
+    </delete>
+    <select id="getBlogById" parameterType="string" resultType="com.fe.atom.domain.Blog" >
+        SELECT <include refid="Base_Column_List" /> FROM atom_blog WHERE blog_id = (#{id})
+    </select>
+</mapper>

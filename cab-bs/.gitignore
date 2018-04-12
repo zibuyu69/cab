@@ -1,0 +1,8 @@
+.idea/
+
+
+target/
+*.class
+atom.iml
+atom_react/yarn.lock
+atom_react/package-lock.json
