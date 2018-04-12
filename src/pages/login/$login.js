@@ -1,14 +1,19 @@
 import React from "react";
 import { Button, Form, Icon, Input } from "antd";
 import { connect } from "dva";
-
+import router from "umi/router";
 const FormItem = Form.Item;
 
 class Index extends React.Component {
+  //返回跳转
+  routerGo = type => {
+    if (type === "return") {
+      router.push("/");
+    }
+  };
   open = () => {
     console.log(this.props.login);
   };
-
   handleSubmit = e => {
     e.preventDefault(); //固定格式
     this.props.form.validateFields((err, values) => {
@@ -32,7 +37,7 @@ class Index extends React.Component {
       >
         <card>
           <Form
-            onSubmit={this.handleSubmit}
+            onSubmit={this.handleSubmit}//Submit 表单获取数据
             style={{ margin: "0px auto", width: "40%", opacity: "0.9" }}
           >
             <FormItem>
@@ -71,11 +76,12 @@ class Index extends React.Component {
                 htmlType="submit"
                 className="login-form-button"
               >
-                登录
+                登录{this.props.login.type}
               </Button>
               <Button
                 type="primary"
                 className="login-form-button"
+                onClick={() => this.routerGo("return")}
               >
                 返回
               </Button>

@@ -1,10 +1,12 @@
-import { getBlogs, addBlog, getUserById } from "../services/index"; // 引入了services
-import { getUserBySession } from "../services/common";
+import { login } from "../services/login"; // 引入了services
 import { message } from "antd";
+import pathToRegexp from "path-to-regexp";
+import router from "umi/router";
+
 export default {
   namespace: "login",
   state: {
-
+    type: ""
   },
   // 访问 redux
   reducers: {
@@ -18,32 +20,36 @@ export default {
     *fetch({ payload }, { call, put }) {
       yield put({ type: "save", payload });
     },
-    *login({ payload }, { call, put }) {
+    *login({ payload }, { call, put, select }) {
       console.log(payload);
-      yield put({
-        type: "save",
-        payload
-      });
+      //从redux中获取type传到payload
+      const { type } = yield select(store => store.login);
+      payload.type = type;
+      //开始call
+      const backData = yield call(login, payload);
+      if (backData && backData.status === "200") {
+        message.success("login OK");
+        router.push("/" + type);
+      } else {
+        message.error("ERROR");
+      }
+      //测试阶段直接转跳
+      router.push("/" + type);
     }
   },
   //页面加载或者跳转路由执行的方法
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (location.pathname === "/") {
-          // 获取 帖子列表
+        if (location.pathname.indexOf("/login") >= 0) {
+          const re = pathToRegexp("/login/:type");
+          const match = re.exec(location.pathname);
+          const type = match[1];
           dispatch({
-            type: "getBlogList",
+            type: "save",
             payload: {
-              pageNum: 1,
-              pageSize: 10,
-              key: "123"
+              type
             }
-          });
-          // 获取当前 session 的用户基本信息
-          dispatch({
-            type: "getUserInfo",
-            payload: {}
           });
         }
       });

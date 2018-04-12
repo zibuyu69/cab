@@ -1,10 +1,26 @@
 import React from "react";
 import { Layout, Menu, Row, Col, Card, Button, Input } from "antd";
 import { connect } from "dva";
+import router from "umi/router";
+
 
 class Index extends React.Component {
+  routerGo = (type) => {
+    if(type==='find'){
+        router.push("/find");
+    }
+    if(type==='return'){
+        router.push("/");
+    }
+  }
   open = () => {
     console.log(this.props.storage);
+    this.props.dispatch({
+      type: "storage/open",
+      payload: {
+        data: this.props.storage
+      }
+    });
   };
 
   onChange = (value, type) => {
@@ -73,10 +89,10 @@ class Index extends React.Component {
             >
               打开柜门
             </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button type="primary" className="button_margin">
+            <Button type="primary" className="button_margin" onClick={()=>this.routerGo('find')}>
               管理
             </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <Button type="primary" className="button_margin">
+            <Button type="primary" className="button_margin" onClick={()=>this.routerGo('return')} >
               退出
             </Button>
           </div>

@@ -1,6 +1,8 @@
-import { getBlogs, addBlog, getUserById } from "../services/index"; // 引入了services
+import { storage} from "../services/storage"; // 引入了services
 import { getUserBySession } from "../services/common";
 import { message } from "antd";
+import router from "umi/router";
+
 export default {
   namespace: "storage",
   state: {
@@ -20,12 +22,23 @@ export default {
     *fetch({ payload }, { call, put }) {
       yield put({ type: "save", payload });
     },
+    *open({ payload }, { call, put }) {
+        console.log(payload);
+      //开始call
+      const backData = yield call(storage, payload);
+      if (backData && backData.status === "200") {
+        message.success("成功打开柜门");
+      } else {
+        message.error("ERROR");
+      }
+    },
     *saveNumbers({ payload }, { call, put }) {
       console.log(payload);
       yield put({
         type: "save",
         payload
       });
+
     }
   },
   //页面加载或者跳转路由执行的方法
@@ -33,20 +46,6 @@ export default {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === "/") {
-          // 获取 帖子列表
-          dispatch({
-            type: "getBlogList",
-            payload: {
-              pageNum: 1,
-              pageSize: 10,
-              key: "123"
-            }
-          });
-          // 获取当前 session 的用户基本信息
-          dispatch({
-            type: "getUserInfo",
-            payload: {}
-          });
         }
       });
     }

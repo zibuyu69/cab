@@ -1,13 +1,26 @@
 import React from "react";
 import { Layout, Menu, Row, Col, Card, Button, Input, Table } from "antd";
 import { connect } from "dva";
+import router from "umi/router";
+
 
 class Index extends React.Component {
+  routerGo = (type) => {
+    if(type==='return'){
+        router.push("/");
+  }
+  }
   open = () => {
     console.log(this.props.pickup);
+    this.props.dispatch({
+      type: "pickup/open",
+      payload: {
+        data: this.props.pickup
+      }
+    });
   };
   render() {
-    console.log(this.props.pickup);
+  const data=  this.props.pickup.list
     const windowHight = document.documentElement.clientHeight;
 
 
@@ -25,26 +38,8 @@ class Index extends React.Component {
         dataIndex: "address"
       }
     ];
-    const data = [
-      {
-        key: "1",
-        name: "李建峰",
-        age: 32,
-        address: "001"
-      },
-      {
-        key: "2",
-        name: "张占东",
-        age: 42,
-        address: "002"
-      },
-      {
-        key: "3",
-        name: "闫若鹏",
-        age: 32,
-        address: "003"
-      }
-    ];
+    console.log(this.props.pickup.list);
+
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(
@@ -79,7 +74,7 @@ class Index extends React.Component {
           <Button type="primary" onClick={this.open}>
             打开柜门
           </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-          <Button type="primary" className="button_margin">
+          <Button type="primary" className="button_margin" onClick={()=>this.routerGo('return')}>
             退出
           </Button>
         </div>
