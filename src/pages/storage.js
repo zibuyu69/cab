@@ -17,19 +17,27 @@ class Index extends React.Component {
     console.log(this.props.storage);
     this.props.dispatch({
       type: "storage/open",
-      payload: {
-        data: this.props.storage
-      }
+      payload:
+         this.props.storage
+
     });
   };
 
   onChange = (value, type) => {
     console.log(value.target.value);
+    if (type ==="username") {
+      this.props.dispatch({
+        type: "storage/saveNumbers",
+        payload: {
+            username: value.target.value
+        }
+      });
+    }
     if (type === "phoneNumber") {
       this.props.dispatch({
         type: "storage/saveNumbers",
         payload: {
-          phoneNumber: value.target.value
+          phone_number: value.target.value
         }
       });
     }
@@ -37,7 +45,7 @@ class Index extends React.Component {
       this.props.dispatch({
         type: "storage/saveNumbers",
         payload: {
-          number: value.target.value
+            pa_no: value.target.value
         }
       });
     }
@@ -45,7 +53,7 @@ class Index extends React.Component {
       this.props.dispatch({
         type: "storage/saveNumbers",
         payload: {
-          boxNumber: value.target.value
+          box_no: value.target.value
         }
       });
     }
@@ -58,6 +66,13 @@ class Index extends React.Component {
         className="bac1_img"
       >
         <div className="message_box">
+          <p>收件人姓名</p>{" "}
+          <Input
+            onChange={value => this.onChange(value, "username")}
+            placeholder="请输入收件人姓名"
+          />
+          <br />
+          <br />
           <p>收件人账号</p>{" "}
           <Input
             onChange={value => this.onChange(value, "phoneNumber")}

@@ -22,19 +22,23 @@ export default {
     },
     *login({ payload }, { call, put, select }) {
       console.log(payload);
+
       //从redux中获取type传到payload
       const { type } = yield select(store => store.login);
       payload.type = type;
       //开始call
+
       const backData = yield call(login, payload);
-      if (backData && backData.status === "200") {
+        console.log( backData.data.status);
+        console.log(backData.data.msg);
+
+      if (backData && backData.data.status === 200 && backData.data.msg==="SUCCESS") {
+
         message.success("login OK");
         router.push("/" + type);
       } else {
         message.error("ERROR");
       }
-      //测试阶段直接转跳
-      router.push("/" + type);
     }
   },
   //页面加载或者跳转路由执行的方法

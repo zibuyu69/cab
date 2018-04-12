@@ -5,12 +5,28 @@ import router from "umi/router";
 
 class Index extends React.Component {
   state = { visible: false };
-
+  onTableChange = (pagination) => {
+    console.log(pagination);
+    this.props.dispatch({
+      type: "find/getList",
+      payload: {
+        type:0,
+        pageNum: pagination.current,
+        pageSize: pagination.pageSize
+      }
+    });
+  }
   handleOk = e => {
+    console.log(this.props.find.phone_number);
     this.props.dispatch({
       type: "find/changeTrue",
       payload: {
-        data: this.props.storage
+        pa_id: this.props.find.pa_id,
+        username: this.props.find.username,
+        pa_no: this.props.find.pa_no,
+        box_no: this.props.find.box_no,
+        last_time: this.props.find.last_time,
+        phone_number: this.props.find.phone_number
       }
     });
     console.log(e);
@@ -30,67 +46,74 @@ class Index extends React.Component {
       router.push("/");
     }
   };
-  find = value => {
+  search = (value, type) => {
     console.log(value);
+    console.log(type);
     this.props.dispatch({
-      type: "find/find",
+      type: "find/getList",
       payload: {
-        data: value
+        type: 1,
+        searchValue: value,
+        pageNum: 1,
+        pageSize: 5
       }
     });
   };
   change = value => {
     console.log(value);
     this.props.dispatch({
-      type: "find/change",
-      payload: {
-        data: value
-      }
+      type: "find/changeValue",
+      payload: value
     });
     this.setState({
       visible: true
     });
   };
+
   open = () => {
-    console.log(this.props.find);
+    console.log(this.props.find.selectedRowList1.length);
+    const ArrayList = this.props.find.selectedRowList1.map(item => {
+      return item.pa_no;
+    });
     this.props.dispatch({
       type: "find/open",
-      payload: {
-        data: this.props.find
-      }
+    payload:  {
+    boxNumberList:  ArrayList
+    }
+
     });
   };
   changeValue = (value, type) => {
     console.log(value.target.value);
-    if (type === "name") {
+    if (type === "username") {
       this.props.dispatch({
         type: "find/changeValue",
         payload: {
-          name: value.target.value
+          username: value.target.value
         }
       });
     }
-    if (type === "boxNumber") {
+    if (type === "box_no") {
       this.props.dispatch({
         type: "find/changeValue",
         payload: {
-          boxNumber: value.target.value
+          box_no: value.target.value
         }
       });
     }
-    if (type === "numbers") {
+    if (type === "pa_no") {
       this.props.dispatch({
         type: "find/changeValue",
         payload: {
-          numbers: value.target.value
+          pa_no: value.target.value
         }
       });
     }
-    if (type === "lasttime") {
+    if (type === "last_time") {
       this.props.dispatch({
         type: "find/changeValue",
         payload: {
-          lasttime: value.target.value
+          last_time: value.target.value
         }
       });
     }
@@ -102,19 +125,19 @@ class Index extends React.Component {
     const columns = [
       {
         title: "姓名",
-        dataIndex: "name"
+        dataIndex: "username"
       },
       {
         title: "柜门号",
-        dataIndex: "boxNumber"
+        dataIndex: "box_no"
       },
       {
         title: "快递单号",
-        dataIndex: "numbers"
+        dataIndex: "pa_no"
       },
       {
         title: "最后期限",
-        dataIndex: "lasttime"
+        dataIndex: "last_time"
       },
       {
         title: "修改",
@@ -128,6 +151,7 @@ class Index extends React.Component {
     console.log(this.props.find);
     const data = this.props.find.list;
     const rowSelection = {
+      selectedRowKeys: this.props.find.selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(
           `selectedRowKeys: ${selectedRowKeys}`,
@@ -138,6 +162,12 @@ class Index extends React.Component {
           type: "find/saveRowList",
           payload: {
             selectedRows
+          }
+        });
+        this.props.dispatch({
+          type: "find/save",
+          jb: {
+            selectedRowKeys,
           }
         });
       },
@@ -160,30 +190,30 @@ class Index extends React.Component {
         >
           <Input
             placeholder="姓名"
-            value={this.props.find.name}
-            onChange={value => this.changeValue(value, "name")}
+            value={this.props.find.username} // model层的state必须先定义
+            onChange={value => this.changeValue(value, "username")}
           />
           <Input
             placeholder="柜门号"
-            value={this.props.find.boxNumber}
-            onChange={value => this.changeValue(value, "boxNumber")}
+            value={this.props.find.box_no}
+            onChange={value => this.changeValue(value, "box_no")}
           />
           <Input
             placeholder="快递单号"
-            value={this.props.find.numbers}
-            onChange={value => this.changeValue(value, "numbers")}
+            value={this.props.find.pa_no}
+            onChange={value => this.changeValue(value, "pa_no")}
           />
           <Input
             placeholder="最后期限"
-            value={this.props.find.lasttime}
-            onChange={value => this.changeValue(value, "lasttime")}
+            value={this.props.find.last_time}
+            onChange={value => this.changeValue(value, "last_time")}
           />
         </Modal>
         <div className="find_1">
           <p>查询快递</p>
           <Search
             placeholder="请输入要查询的快递单号"
-            onSearch={value => this.find(value)}
+            onSearch={value => this.search(value, "query")}
             enterButton
           />
           <br />
@@ -192,7 +222,9 @@ class Index extends React.Component {
         <Table
           rowSelection={rowSelection}
           columns={columns}
+          pagination={this.props.find.listPagination}
           dataSource={data}
+          onChange={this.onTableChange}
         />
         <div className="button_margin">
           <Button type="primary" onClick={this.open}>

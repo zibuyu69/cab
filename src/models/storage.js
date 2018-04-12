@@ -6,9 +6,9 @@ import router from "umi/router";
 export default {
   namespace: "storage",
   state: {
-    phoneNumber: "",
-    number: "",
-    boxNumber: ""
+      phone_number: "",
+    pa_no: "",
+    box_no: ""
   },
   // 访问 redux
   reducers: {
@@ -26,10 +26,11 @@ export default {
         console.log(payload);
       //开始call
       const backData = yield call(storage, payload);
-      if (backData && backData.status === "200") {
-        message.success("成功打开柜门");
+      console.log(backData);
+      if (backData && backData.data.status === 200 && backData.data.data===true)  {
+        message.success("成功打开柜门并存入快递");
       } else {
-        message.error("ERROR");
+        message.error("该快递柜已被占用");
       }
     },
     *saveNumbers({ payload }, { call, put }) {

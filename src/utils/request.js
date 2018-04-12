@@ -19,7 +19,7 @@ function checkStatus(response) {
 function checkData(data){
   if(data.data.status === 0) {
     message.warning("登陆过期！请重新登陆！");
-    router.push("/login");
+    router.push("/");
   }
   return data;
 }

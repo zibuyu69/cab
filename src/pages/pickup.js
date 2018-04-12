@@ -5,6 +5,17 @@ import router from "umi/router";
 
 
 class Index extends React.Component {
+  onTableChange = (pagination) => {
+    console.log(pagination);
+    this.props.dispatch({
+      type: "pickup/getList",
+      payload: {
+        type:0,
+        pageNum: pagination.current,
+        pageSize: pagination.pageSize
+      }
+    });
+  }
   routerGo = (type) => {
     if(type==='return'){
         router.push("/");
@@ -12,10 +23,13 @@ class Index extends React.Component {
   }
   open = () => {
     console.log(this.props.pickup);
+    const ArrayList = this.props.pickup.selectedRowList1.map(item => {
+      return item.pa_no;
+    });
     this.props.dispatch({
       type: "pickup/open",
-      payload: {
-        data: this.props.pickup
+      payload:  {
+      boxNumberList:  ArrayList
       }
     });
   };
@@ -27,20 +41,21 @@ class Index extends React.Component {
     const columns = [
       {
         title: "姓名",
-        dataIndex: "name"
+        dataIndex: "username"
       },
       {
         title: "柜门号",
-        dataIndex: "age"
+        dataIndex: "box_no"
       },
       {
         title: "快递单号",
-        dataIndex: "address"
+        dataIndex: "pa_no"
       }
     ];
     console.log(this.props.pickup.list);
 
     const rowSelection = {
+      selectedRowKeys: this.props.pickup.selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
         console.log(
           `selectedRowKeys: ${selectedRowKeys}`,
@@ -53,12 +68,19 @@ class Index extends React.Component {
             selectedRows
           }
         });
+        this.props.dispatch({
+          type: "pickup/save",
+          jb: {
+            selectedRowKeys,
+          }
+        });
       },
       getCheckboxProps: record => ({
         disabled: record.name === "Disabled User", // Column configuration not to be checked
         name: record.name
       })
     };
+
 
     return (
       <div
@@ -69,6 +91,8 @@ class Index extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
+           pagination={this.props.pickup.listPagination}
+           onChange={this.onTableChange}
         />
         <div className="button_margin">
           <Button type="primary" onClick={this.open}>

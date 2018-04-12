@@ -2,12 +2,20 @@ import { getBlogs, addBlog, getUserById } from "../services/index"; // 引入了
 import { getUserBySession } from "../services/common";
 import { message } from "antd";
 import { pickup } from "../services/pickup"; // 引入了services
-
+import { getList } from "../services/pickup";
 export default {
   namespace: "pickup",
 
   state: {
-    selectedRowList1: [] // 当前选中的列表值LIST
+    selectedRowKeys:[],
+    selectedRowList1: [] ,// 当前选中的列表值LIST
+    listPagination: {
+         // 表格配置项
+         current: 1,
+         total: 0,
+         pageSize: 5,
+         pageSizeOptions: ['10', '20', '50', '100'],
+       },
   },
   // 访问 redux
   reducers: {
@@ -22,40 +30,28 @@ export default {
       yield put({ type: "save", payload });
     },
     *getList({ payload }, { call, put }) {
-      //开始call
-      // const backData = yield call(getBlogs, payload);
-      // if (backData.data && backData.data.status === "200") {
-      //   const BlogList=backData.data.status;
-      //   yield put ({
-      //     type:"save",
-      //     payload:{
-      //       BlogList
-      //     }
-      //   })
-      const data = [
-        {
-          key: "1",
-          name: "李建峰",
-          age: 32,
-          address: "001"
-        },
-        {
-          key: "2",
-          name: "张占东",
-          age: 42,
-          address: "002"
-        },
-        {
-          key: "3",
-          name: "闫若鹏",
-          age: 32,
-          address: "003"
-        }
-      ];
+      console.log(payload);
+
+      const backData=yield call(getList,payload);
+      console.log(backData);
+      if (backData && backData.data.status === 200 && backData.data.msg==="SUCCESS") {
+        message.success("成功");
+      } else {
+        message.error("ERROR");
+      }
+      console.log(backData.data.data);
+      const data=backData.data.data.data
       yield put({
         type: "save",
         jb: {
-          list: data
+          list:data,
+          listPagination: {
+               // 表格配置项
+               current: backData.data.data.pageInfo.pageno,
+               total: backData.data.data.pageInfo.total,
+               pageSize: backData.data.data.pageInfo.rowcount,
+               pageSizeOptions: ['10', '20', '50', '100'],
+             },
         }
       });
 
@@ -65,11 +61,25 @@ export default {
     },
     *open({ payload }, { call, put }) {
       console.log(payload);
-      yield put({ type: "save", payload });
+
       //开始call
       const backData = yield call(pickup, payload);
-      if (backData && backData.status === "200") {
-        message.success("成功打开柜门");
+      if (backData && backData.data.status === 200 && backData.data.msg==="SUCCESS") {
+        message.success("成功");
+        yield put({
+          type: "getList",
+          payload: {
+            type:1,
+            pageNum:1,
+            pageSize:5
+          }
+        });
+        yield put({
+          type: "save",
+          jb: {
+            selectedRowKeys: [],
+          }
+        });
       } else {
         message.error("ERROR");
       }
@@ -82,8 +92,10 @@ export default {
           selectedRowList1: payload.selectedRows
         }
       });
-    }
-  },
+    },
+    },
+
+
   //页面加载或者跳转路由执行的方法
   subscriptions: {
     setup({ dispatch, history }) {
@@ -93,7 +105,9 @@ export default {
           dispatch({
             type: "getList",
             payload: {
-
+              type:0,
+              pageNum:1,
+              pageSize:5
             }
           });
           // 获取当前 session 的用户基本信息

@@ -11,9 +11,9 @@ class Index extends React.Component {
       router.push("/");
     }
   };
-  open = () => {
+/*  open = () => {
     console.log(this.props.login);
-  };
+  };*/
   handleSubmit = e => {
     e.preventDefault(); //固定格式
     this.props.form.validateFields((err, values) => {
@@ -37,11 +37,11 @@ class Index extends React.Component {
       >
         <card>
           <Form
-            onSubmit={this.handleSubmit}//Submit 表单获取数据
+            onSubmit={this.handleSubmit} //Submit 表单获取数据
             style={{ margin: "0px auto", width: "40%", opacity: "0.9" }}
           >
             <FormItem>
-              {getFieldDecorator("userName", {
+              {getFieldDecorator("phone_number", {
                 rules: [
                   { required: true, message: "Please input your username!" }
                 ]
@@ -71,7 +71,7 @@ class Index extends React.Component {
             </FormItem>
             <FormItem>
               <Button
-                onClick={this.open}
+                onClick={this.handleSubmit}
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
