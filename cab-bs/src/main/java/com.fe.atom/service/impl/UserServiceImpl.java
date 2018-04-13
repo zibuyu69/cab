@@ -100,6 +100,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDTO login(User user) {
         User userVO = userMapper.getUserByPhoneNumber(user.getPhone_number());
+        if("0".equals(userVO.getPower()) && "1".equals(user.getPower())){
+          return null;
+        }
         // MD5 加密
         String password = DigestUtils.md5Hex(user.getPassword());
         if(!StringUtils.isEmpty(userVO) && password.equals(userVO.getPassword())){

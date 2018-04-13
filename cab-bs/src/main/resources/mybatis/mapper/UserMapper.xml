@@ -6,7 +6,7 @@
         <result column="score" property="score" jdbcType="BIGINT"/>
     </resultMap>
     <sql id="Base_Column_List" >
-        user_id,phone_number,password,username
+        user_id,phone_number,password,username,power
     </sql>
     <insert id="insert" parameterType="com.fe.atom.domain.User">
         INSERT INTO cab_user (name,age) VALUES (#{name}, #{age})

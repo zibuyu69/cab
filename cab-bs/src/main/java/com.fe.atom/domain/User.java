@@ -27,6 +27,10 @@ public class User implements Serializable {
      *  用户手机号
      */
     private String phone_number;
+  /**
+   *  权限
+   */
+    private String power;
 
   public String getUser_id() {
     return user_id;
@@ -58,6 +62,14 @@ public class User implements Serializable {
 
   public void setPhone_number(String phone_number) {
     this.phone_number = phone_number;
+  }
+
+  public String getPower() {
+    return power;
+  }
+
+  public void setPower(String power) {
+    this.power = power;
   }
 
   public User() {
