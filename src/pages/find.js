@@ -1,21 +1,24 @@
 import React from "react";
-import { Divider, Modal, Row, Col, Card, Button, Input, Table } from "antd";
+import { Form, Modal, Button, Input, Table,Steps } from "antd";
 import { connect } from "dva";
 import router from "umi/router";
+const FormItem = Form.Item;
+const Step = Steps.Step;
 
 class Index extends React.Component {
   state = { visible: false };
-  onTableChange = (pagination) => {
+  onTableChange = pagination => {
     console.log(pagination);
     this.props.dispatch({
       type: "find/getList",
       payload: {
-        type:0,
+        type: 1,
         pageNum: pagination.current,
         pageSize: pagination.pageSize
       }
     });
-  }
+  };
+  //触发修改
   handleOk = e => {
     console.log(this.props.find.phone_number);
     this.props.dispatch({
@@ -34,6 +37,7 @@ class Index extends React.Component {
       visible: false
     });
   };
+  //关闭修改
   handleCancel = e => {
     console.log(e);
     this.setState({
@@ -77,10 +81,9 @@ class Index extends React.Component {
     });
     this.props.dispatch({
       type: "find/open",
-    payload:  {
-    boxNumberList:  ArrayList
-    }
-
+      payload: {
+        boxNumberList: ArrayList
+      }
     });
   };
   changeValue = (value, type) => {
@@ -167,7 +170,7 @@ class Index extends React.Component {
         this.props.dispatch({
           type: "find/save",
           jb: {
-            selectedRowKeys,
+            selectedRowKeys
           }
         });
       },
@@ -176,38 +179,63 @@ class Index extends React.Component {
         name: record.name
       })
     };
-
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 }
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 20 }
+      }
+    };
     return (
+
       <div
-        style={{ padding: "60px 12%", height: windowHight - 60 }}
+        style={{ padding: "30px 3%", height: windowHight - 60 }}
         className="bac1_img"
       >
+        <Steps direction="vertical" current={2} style={{display:"inline-block", width:"20%",float:"left", marginTop:"60px",marginRight:"50px"}}>
+        <Step title="登录" description="请输入您的登录账号和密码" />
+        <Step title="填写信息" description="请填写需要存入快递的信息或者选取需要取出的" />
+        <Step title="管理" description="进行快递信息的管理" />
+      </Steps>
         <Modal
           title="修改列表"
           visible={this.state.visible}
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <Input
-            placeholder="姓名"
-            value={this.props.find.username} // model层的state必须先定义
-            onChange={value => this.changeValue(value, "username")}
-          />
-          <Input
-            placeholder="柜门号"
-            value={this.props.find.box_no}
-            onChange={value => this.changeValue(value, "box_no")}
-          />
-          <Input
-            placeholder="快递单号"
-            value={this.props.find.pa_no}
-            onChange={value => this.changeValue(value, "pa_no")}
-          />
-          <Input
-            placeholder="最后期限"
-            value={this.props.find.last_time}
-            onChange={value => this.changeValue(value, "last_time")}
-          />
+          <FormItem {...formItemLayout} label="姓名:">
+            <Input
+              placeholder="姓名"
+              value={this.props.find.username} // model层的state必须先定义
+              onChange={value => this.changeValue(value, "username")}
+              disabled="true"
+            />
+          </FormItem>
+          <FormItem {...formItemLayout} label="柜门号:">
+            <Input
+              placeholder="柜门号"
+              value={this.props.find.box_no}
+              onChange={value => this.changeValue(value, "box_no")}
+              disabled="true"
+            />
+          </FormItem>
+          <FormItem {...formItemLayout} label="快递单号:">
+            <Input
+              placeholder="快递单号"
+              value={this.props.find.pa_no}
+              onChange={value => this.changeValue(value, "pa_no")}
+            />
+          </FormItem>
+          <FormItem {...formItemLayout} label="最后期限:">
+            <Input
+              placeholder="最后期限"
+              value={this.props.find.last_time}
+              onChange={value => this.changeValue(value, "last_time")}
+            />
+          </FormItem>
         </Modal>
         <div className="find_1">
           <p>查询快递</p>
@@ -220,6 +248,7 @@ class Index extends React.Component {
         </div>
         <br />
         <Table
+           style={{display:"inline-block", width:"70%",}}
           rowSelection={rowSelection}
           columns={columns}
           pagination={this.props.find.listPagination}
@@ -239,6 +268,7 @@ class Index extends React.Component {
           </Button>
         </div>
       </div>
+
     );
   }
 }

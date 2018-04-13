@@ -1,10 +1,10 @@
 import React from "react";
-import { Layout, Menu, Row, Col, Card, Button, Input } from "antd";
+import {  Button, Input ,Steps} from "antd";
 import { connect } from "dva";
 import router from "umi/router";
-
-
+const Step = Steps.Step;
 class Index extends React.Component {
+  //页面跳转
   routerGo = (type) => {
     if(type==='find'){
         router.push("/find");
@@ -13,16 +13,16 @@ class Index extends React.Component {
         router.push("/");
     }
   }
+  //打开柜门
   open = () => {
     console.log(this.props.storage);
     this.props.dispatch({
       type: "storage/open",
       payload:
          this.props.storage
-
     });
   };
-
+  //获取输入框改变的值
   onChange = (value, type) => {
     console.log(value.target.value);
     if (type ==="username") {
@@ -65,7 +65,12 @@ class Index extends React.Component {
         style={{ padding: "60px 12%", height: windowHight - 60 }}
         className="bac1_img"
       >
-        <div className="message_box">
+        <Steps direction="vertical" current={1} style={{display:"inline-block", width:"20%",float:"left", marginTop:"60px",marginRight:"50px"}}>
+        <Step title="登录" description="请输入您的登录账号和密码" />
+        <Step title="填写信息" description="请填写需要存入快递的信息或者选取需要取出的" />
+        <Step title="管理" description="进行快递信息的管理" />
+      </Steps>
+        <div className="message_box" style={{display:"inline-block", width:"50%",}}>
           <p>收件人姓名</p>{" "}
           <Input
             onChange={value => this.onChange(value, "username")}
@@ -112,6 +117,7 @@ class Index extends React.Component {
             </Button>
           </div>
         </div>
+
       </div>
     );
   }

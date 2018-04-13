@@ -55,6 +55,7 @@ export default {
 
     });
     },
+    //触发修改
     *changeTrue({ payload }, { call, put }) {
         console.log(payload);
       //开始call
@@ -145,7 +146,7 @@ export default {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === "/find") {
-          // 获取 帖子列表
+          // 获取 快递列表
           dispatch({
             type: "getList",
             payload: {

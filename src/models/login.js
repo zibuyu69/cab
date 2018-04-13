@@ -16,18 +16,15 @@ export default {
   },
   // 数据逻辑方法
   effects: {
-    // 合并数据方法
-    *fetch({ payload }, { call, put }) {
-      yield put({ type: "save", payload });
-    },
+    // 开始登陆
+
     *login({ payload }, { call, put, select }) {
       console.log(payload);
 
       //从redux中获取type传到payload
       const { type } = yield select(store => store.login);
-      payload.type = type;
+      payload.power = type === "storage" ? 1 : 0;
       //开始call
-
       const backData = yield call(login, payload);
         console.log( backData.data.status);
         console.log(backData.data.msg);
@@ -37,7 +34,7 @@ export default {
         message.success("login OK");
         router.push("/" + type);
       } else {
-        message.error("ERROR");
+        message.error("登录名或者密码错误");
       }
     }
   },

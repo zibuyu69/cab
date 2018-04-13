@@ -1,8 +1,10 @@
 import { getBlogs, addBlog, getUserById } from "../services/index"; // 引入了services
 import { getUserBySession } from "../services/common";
-import { message } from "antd";
+import { message ,Steps} from "antd";
 import { pickup } from "../services/pickup"; // 引入了services
 import { getList } from "../services/pickup";
+const Step = Steps.Step;
+
 export default {
   namespace: "pickup",
 
@@ -81,7 +83,7 @@ export default {
           }
         });
       } else {
-        message.error("ERROR");
+        message.error("打开柜门失败");
       }
     },
     *saveRowList({ payload }, { call, put }) {
@@ -101,7 +103,7 @@ export default {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (location.pathname === "/pickup") {
-          // 获取 帖子列表
+          // 获取 快递列表
           dispatch({
             type: "getList",
             payload: {

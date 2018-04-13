@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, Form, Icon, Input } from "antd";
+import { Button, Form, Icon, Input,Steps} from "antd";
 import { connect } from "dva";
 import router from "umi/router";
-const FormItem = Form.Item;
 
+const FormItem = Form.Item;
+const Step = Steps.Step;
 class Index extends React.Component {
   //返回跳转
   routerGo = type => {
@@ -11,15 +12,14 @@ class Index extends React.Component {
       router.push("/");
     }
   };
-/*  open = () => {
-    console.log(this.props.login);
-  };*/
+//获取表单值传送
   handleSubmit = e => {
     e.preventDefault(); //固定格式
     this.props.form.validateFields((err, values) => {
       if (!err) {
         console.log(this.props);
         console.log("Received values of form: ", values);
+        console.log(values);
         this.props.dispatch({
           type: "login/login",
           payload: values
@@ -27,18 +27,24 @@ class Index extends React.Component {
       }
     });
   };
+  //样式
   render() {
     const windowHight = document.documentElement.clientHeight;
     const { getFieldDecorator } = this.props.form;
     return (
       <div
-        style={{ padding: "60px 12%", height: windowHight - 60 }}
-        className="bac_img"
+        style={{ padding: "120px 12%", height: windowHight - 60 }}
+        className="bac2_img"
       >
-        <card>
+        <Steps direction="vertical" current={0}  className="left">
+        <Step title=<span  className="red">登录</span> description=<span  className="red">请输入您的登录账号和密码</span> />
+        <Step title=<span  className="red">填写信息</span> description=<span  className="red">请填写需要存入快递的信息</span> />
+        <Step title=<span  className="red">管理</span> description=<span  className="red">进行快递信息的管理</span> />
+      </Steps>
+      <div style={{display:"inline-block", width: "40%"}}>
           <Form
             onSubmit={this.handleSubmit} //Submit 表单获取数据
-            style={{ margin: "0px auto", width: "40%", opacity: "0.9" }}
+            style={{ margin: "0px auto", width: "100%", opacity: "0.9" }}
           >
             <FormItem>
               {getFieldDecorator("phone_number", {
@@ -71,13 +77,12 @@ class Index extends React.Component {
             </FormItem>
             <FormItem>
               <Button
-                onClick={this.handleSubmit}
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
               >
-                登录{this.props.login.type}
-              </Button>
+                登录
+              </Button><br/>
               <Button
                 type="primary"
                 className="login-form-button"
@@ -87,7 +92,7 @@ class Index extends React.Component {
               </Button>
             </FormItem>
           </Form>
-        </card>
+  </div>
       </div>
     );
   }

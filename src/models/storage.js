@@ -18,10 +18,7 @@ export default {
   },
   // 数据逻辑方法
   effects: {
-    // 合并数据方法
-    *fetch({ payload }, { call, put }) {
-      yield put({ type: "save", payload });
-    },
+    // 打开柜门存入快递
     *open({ payload }, { call, put }) {
         console.log(payload);
       //开始call
@@ -33,13 +30,13 @@ export default {
         message.error("该快递柜已被占用");
       }
     },
+    //输入框获取改变的
     *saveNumbers({ payload }, { call, put }) {
       console.log(payload);
       yield put({
         type: "save",
         payload
       });
-
     }
   },
   //页面加载或者跳转路由执行的方法

@@ -1,7 +1,8 @@
 import React from "react";
-import { Layout, Menu, Row, Col, Card, Button, Input, Table } from "antd";
+import { Layout, Menu, Row, Col, Card, Button, Steps, Table } from "antd";
 import { connect } from "dva";
 import router from "umi/router";
+const Step = Steps.Step;
 
 
 class Index extends React.Component {
@@ -16,16 +17,19 @@ class Index extends React.Component {
       }
     });
   }
+  //跳转页面
   routerGo = (type) => {
     if(type==='return'){
         router.push("/");
   }
   }
+  //打开柜门
   open = () => {
     console.log(this.props.pickup);
     const ArrayList = this.props.pickup.selectedRowList1.map(item => {
       return item.pa_no;
     });
+    console.log(this.props.pickup);
     this.props.dispatch({
       type: "pickup/open",
       payload:  {
@@ -33,11 +37,10 @@ class Index extends React.Component {
       }
     });
   };
+
   render() {
-  const data=  this.props.pickup.list
-    const windowHight = document.documentElement.clientHeight;
-
-
+    const data=  this.props.pickup.list
+    const windowHight = document.documentElement.clientHeight;//获得窗口高度
     const columns = [
       {
         title: "姓名",
@@ -57,7 +60,7 @@ class Index extends React.Component {
     const rowSelection = {
       selectedRowKeys: this.props.pickup.selectedRowKeys,
       onChange: (selectedRowKeys, selectedRows) => {
-        console.log(
+          console.log(
           `selectedRowKeys: ${selectedRowKeys}`,
           "selectedRows: ",
           selectedRows
@@ -84,10 +87,16 @@ class Index extends React.Component {
 
     return (
       <div
-        style={{ padding: "60px 12%", height: windowHight - 60 }}
+        style={{ padding: "60px 5%", height: windowHight - 60 }}
         className="bac1_img"
       >
+        <Steps direction="vertical" current={2} style={{display:"inline-block", width:"20%",float:"left", marginTop:"60px",marginRight:"50px"}}>
+        <Step title="登录" description="请输入您的登录账号和密码" />
+        <Step title="填写信息" description="请填写需要存入快递的信息" />
+        <Step title="管理" description="进行快递信息的管理" />
+      </Steps>
         <Table
+          style={{display:"inline-block", width:"70%",}}
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
