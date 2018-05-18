@@ -2,10 +2,12 @@ import React from "react";
 import { Form, Modal, Button, Input, Table,Steps } from "antd";
 import { connect } from "dva";
 import router from "umi/router";
+
 const FormItem = Form.Item;
 const Step = Steps.Step;
 
 class Index extends React.Component {
+  //
   state = { visible: false };
   onTableChange = pagination => {
     console.log(pagination);

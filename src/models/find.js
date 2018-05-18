@@ -2,29 +2,26 @@ import { addBlog, getUserById } from "../services/index"; // 引入了services
 import { getUserBySession } from "../services/common";
 import { message } from "antd";
 import router from "umi/router";
-import { find } from "../services/find"; // 引入了services
-import { getBlogs } from "../services/getBlogs"; // 引入了services
-import { getList } from "../services/pickup";
-import { update } from "../services/pickup";
-import { pickup } from "../services/pickup";
+import { getBlogs, find } from "../services/getBlogs"; // 引入了services
+import { getList, update, pickup } from "../services/pickup";
+
 export default {
   namespace: "find",
   state: {
     list: [],
     selectedRowKeys: [],
-    selectedRowList1: [] ,// 当前选中的列表值LIST
-    username:'',
-    box_no:'',
-    pa_no:'',
-    last_time:'',
-    type:'',
+    selectedRowList1: [], // 当前选中的列表值LIST
+    username: "",
+    box_no: "",
+    pa_no: "",
+    last_time: "",
+    type: "",
     listPagination: {
-         // 表格配置项
-         current: 1,
-         total: 0,
-         pageSize: 5,
-         pageSizeOptions: ['10', '20', '50', '100'],
-       },
+      // 表格配置项
+      current: 1,
+      total: 0,
+      pageSize: 5
+    }
   },
   // 访问 redux
   reducers: {
@@ -42,63 +39,66 @@ export default {
       console.log(payload);
       yield put({
         type: "save",
-        jb:
-        payload
-
-    });
-
+        jb: payload
+      });
     },
-    *change({payload},{call,put}){
-      yield put ({type:"save",
-    jb:
-      payload.data
-
-    });
+    *change({ payload }, { call, put }) {
+      yield put({
+        type: "save",
+        jb: payload.data
+      });
     },
     //触发修改
     *changeTrue({ payload }, { call, put }) {
-        console.log(payload);
+      console.log(payload);
       //开始call
       const backData = yield call(update, payload);
-      if (backData && backData.data.status === 200 && backData.data.msg==="SUCCESS" && backData.data.data===true) {
+      if (
+        backData &&
+        backData.data.status === 200 &&
+        backData.data.msg === "SUCCESS" &&
+        backData.data.data === true
+      ) {
         message.success("成功");
         yield put({
           type: "getList",
           payload: {
-            type:1,
-            pageNum:1,
-            pageSize:5
-          }
-        });
-      }
-       else {
-        message.error("ERROR");
-      }
-    },
-    *getList({ payload }, { call, put }) {
-      console.log(payload);
-      const backData=yield call(getList,payload);
-
-      if (backData && backData.data.status === 200 && backData.data.msg==="SUCCESS") {
-        console.log(backData.data.data);
-        const data=backData.data.data.data
-        yield put({
-          type: "save",
-          jb: {
-            list:data,
-            listPagination: {
-                 // 表格配置项
-                 current: backData.data.data.pageInfo.pageno,
-                 total: backData.data.data.pageInfo.total,
-                 pageSize: backData.data.data.pageInfo.rowcount,
-                 pageSizeOptions: ['10', '20', '50', '100'],
-               },
+            type: 1,
+            pageNum: 1,
+            pageSize: 5
           }
         });
       } else {
         message.error("ERROR");
       }
+    },
+    *getList({ payload }, { call, put }) {
+      console.log(payload);
+      const backData = yield call(getList, payload);
 
+      if (
+        backData &&
+        backData.data.status === 200 &&
+        backData.data.msg === "SUCCESS"
+      ) {
+        console.log(backData.data.data);
+        const data = backData.data.data.data;
+        yield put({
+          type: "save",
+          jb: {
+            list: data,
+            listPagination: {
+              // 表格配置项
+              current: backData.data.data.pageInfo.pageno,
+              total: backData.data.data.pageInfo.total,
+              pageSize: backData.data.data.pageInfo.rowcount,
+              pageSizeOptions: ["10", "20", "50", "100"]
+            }
+          }
+        });
+      } else {
+        message.error("ERROR");
+      }
 
       // } else {
       //   message.error("START  ERROR");
@@ -110,20 +110,24 @@ export default {
       //开始call
       const backData = yield call(pickup, payload);
 
-      if (backData && backData.data.status === 200 && backData.data.msg==="SUCCESS") {
+      if (
+        backData &&
+        backData.data.status === 200 &&
+        backData.data.msg === "SUCCESS"
+      ) {
         message.success("成功");
         yield put({
           type: "getList",
           payload: {
-            type:1,
-            pageNum:1,
-            pageSize:5
+            type: 1,
+            pageNum: 1,
+            pageSize: 5
           }
         });
         yield put({
           type: "save",
           jb: {
-            selectedRowKeys: [],
+            selectedRowKeys: []
           }
         });
       } else {
@@ -150,9 +154,9 @@ export default {
           dispatch({
             type: "getList",
             payload: {
-              type:1,
-              pageNum:1,
-              pageSize:5
+              type: 1,
+              pageNum: 1,
+              pageSize: 5
             }
           });
           // 获取当前 session 的用户基本信息
