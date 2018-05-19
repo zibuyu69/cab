@@ -7,6 +7,11 @@ export default {
   state: {
     list: [],
     userlist: [],
+    username: "",
+    number: "",
+    phoneNumber:"",
+
+
     // 表格配置项
     listPagination: {
       current: 1,
@@ -21,6 +26,14 @@ export default {
     }
   },
   effects: {
+    //往redux中放数据
+    *changeValue({ payload }, { call, put }) {
+      console.log(payload);
+      yield put({
+        type: "save",
+        jb: payload
+      });
+    },
     *getList({ payload }, { call, put }) {
       console.log(payload);
       // const backData = yield call(pickup, payload);
@@ -37,7 +50,6 @@ export default {
         }
       };
       if (backData && backData.data.status === 200) {
-        message.success("成功");
         yield put({
           type: "save",
           jb: {

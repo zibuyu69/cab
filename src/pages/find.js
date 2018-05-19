@@ -22,7 +22,7 @@ class Index extends React.Component {
   };
   //触发修改
   handleOk = e => {
-    console.log(this.props.find.phone_number);
+    console.log(this.props.find.last_time);
     this.props.dispatch({
       type: "find/changeTrue",
       payload: {
@@ -50,6 +50,9 @@ class Index extends React.Component {
   routerGo = type => {
     if (type === "return") {
       router.push("/");
+    }
+    if (type === "admin") {
+      router.push("/admin");
     }
   };
   search = (value, type) => {
@@ -267,6 +270,13 @@ class Index extends React.Component {
             onClick={() => this.routerGo("return")}
           >
             退出
+          </Button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Button
+            type="primary"
+            className="button_margin"
+            onClick={() => this.routerGo("admin")}
+          >
+            后台
           </Button>
         </div>
       </div>

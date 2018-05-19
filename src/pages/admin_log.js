@@ -8,7 +8,6 @@ class Admin_box extends React.Component {
       {
         title: "用户姓名3",
         dataIndex: "username",
-        render: text => <a href="javascript:;">{text}</a>
       },
       {
         title: "手机号码",
@@ -19,13 +18,18 @@ class Admin_box extends React.Component {
         dataIndex: "number"
       },
       {
-        title: "修改",
-        key: "action",
-        render: record => {
-          console.log(record);
-          return <a onClick={() => this.change(record)}>修改</a>;
-        }
-      }
+        title: "存入时间",
+        dataIndex: "number"
+      },
+      {
+        title: "取出时间",
+        dataIndex: "number"
+      },
+      {
+        title: "存入快递员",
+        dataIndex: "number"
+      },
+
     ];
     //从props中取值来应用
   const data = this.props.admin_mail.userlist;

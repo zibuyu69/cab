@@ -37,7 +37,6 @@ export default {
         }
       };
       if (backData && backData.data.status === 200) {
-        message.success("成功");
         yield put({
           type: "save",
           jb: {

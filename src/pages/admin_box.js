@@ -5,26 +5,28 @@ import { Table } from "antd";
 class Admin_box extends React.Component {
   render() {
     const columns = [
+
       {
-        title: "用户姓名1",
-        dataIndex: "username",
-        render: text => <a href="javascript:;">{text}</a>
-      },
-      {
-        title: "手机号码",
-        dataIndex: "phoneNumber"
-      },
-      {
-        title: "快递单号",
+        title: "快递柜号",
         dataIndex: "number"
       },
       {
-        title: "修改",
+        title: "快递柜状态",
+        dataIndex: "number"
+      },
+      {
+        title: "操作",
         key: "action",
         render: record => {
           console.log(record);
-          return <a onClick={() => this.change(record)}>修改</a>;
+          return(
+          <span>
+          <a onClick={() => this.change(record)}>启用</a>&nbsp;
+          <a onClick={() => this.change(record)}>禁用</a>
+        </span>
+      )
         }
+
       }
     ];
     //从props中取值来应用

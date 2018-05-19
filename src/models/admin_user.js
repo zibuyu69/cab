@@ -1,12 +1,15 @@
 import { message } from "antd";
-import { getList, update, pickup } from "../services/admin_box";
+import { getList, update, pickup } from "../services/admin_user";
 
 export default {
   //命名空间
-  namespace: "admin_box",
+  namespace: "admin_user",
   state: {
     list: [],
     userlist: [],
+    username: "",
+    phoneNumber:"",
+
     // 表格配置项
     listPagination: {
       current: 1,
@@ -21,6 +24,14 @@ export default {
     }
   },
   effects: {
+
+    *changeValue({ payload }, { call, put }) {
+      console.log(payload);
+      yield put({
+        type: "save",
+        jb: payload
+      });
+    },
     *getList({ payload }, { call, put }) {
       console.log(payload);
       // const backData = yield call(pickup, payload);
@@ -37,7 +48,6 @@ export default {
         }
       };
       if (backData && backData.data.status === 200) {
-        
         yield put({
           type: "save",
           jb: {
