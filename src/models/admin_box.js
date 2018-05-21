@@ -1,5 +1,5 @@
 import { message } from "antd";
-import { getList, update, pickup } from "../services/admin_box";
+import { getList, update, pickup ,getALL,updateBox} from "../services/admin_box";
 
 export default {
   //命名空间
@@ -21,6 +21,34 @@ export default {
     }
   },
   effects: {
+    *startUse({payload},{call, put}){
+      console.log(payload);
+      const backData = yield call(updateBox, payload);
+      if (backData && backData.data.status === 200) {
+        yield put({
+          type: "getALL",
+          payload: {
+            pageNum:1,
+            pageSize:5
+          }
+        });
+      } else {
+        message.error("ERROR");
+      };
+    },
+    *getALL({ payload }, { call, put }) {
+      const backData = yield call(getALL, payload);
+      if (backData && backData.data.status === 200) {
+        yield put({
+          type: "save",
+          jb: {
+            userlist: backData.data.data
+          }
+        });
+      } else {
+        message.error("ERROR");
+      }
+    },
     *getList({ payload }, { call, put }) {
       console.log(payload);
       // const backData = yield call(pickup, payload);
@@ -37,7 +65,7 @@ export default {
         }
       };
       if (backData && backData.data.status === 200) {
-        
+
         yield put({
           type: "save",
           jb: {

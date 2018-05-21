@@ -1,44 +1,64 @@
 import React from "react";
 import { connect } from "dva";
 import { Table } from "antd";
-import { Form, Modal, Button, Input, Steps } from "antd";
+import { Form, Modal, Select, Input, Steps } from "antd";
+const Option = Select.Option;
 
 const FormItem = Form.Item;
 
 class Admin_user extends React.Component {
+  handleChange = value => {
+    console.log(`selected ${value}`);
+  };
   //修改框中的数据即使更改
-    changeValue = (value, type) => {
-      console.log(value.target.value);
-      if (type === "username") {
-        this.props.dispatch({
-          type: "admin_user/changeValue",
-          payload: {
-            username: value.target.value
-          }
-        });
-      }
-      if (type === "phoneNumber") {
-        this.props.dispatch({
-          type: "admin_user/changeValue",
-          payload: {
-            phoneNumber: value.target.value
-          }
-        });
-      }
-      if (type === "number") {
-        this.props.dispatch({
-          type: "admin_user/changeValue",
-          payload: {
-            number: value.target.value
-          }
-        });
-      }
-    };
+  changeValue = (value, type) => {
+    console.log(value.target.value);
+    if (type === "userName") {
+      this.props.dispatch({
+        type: "admin_user/changeValue",
+        payload: {
+          userName: value.target.value
+        }
+      });
+    }
+    if (type === "phoneNumber") {
+      this.props.dispatch({
+        type: "admin_user/changeValue",
+        payload: {
+          phoneNumber: value.target.value
+        }
+      });
+    }
+    if (type === "number") {
+      this.props.dispatch({
+        type: "admin_user/changeValue",
+        payload: {
+          number: value.target.value
+        }
+      });
+    }
+  };
   //默认修改框不可见
   state = { visible: false };
   //关闭修改框
   handleCancel = e => {
     console.log(e);
+    this.setState({
+      visible: false
+    });
+  };
+  //修改框点击确定
+  handleOk = () => {
+    let price = {};
+    price.user_id = this.props.admin_user.userId;
+    price.username = this.props.admin_user.userName;
+    price.phone_number = this.props.admin_user.phoneNumber;
+    price.power = this.props.admin_user.power;
+    console.log(price);
+    this.props.dispatch({
+      type: "admin_user/updata",
+      payload: price
+    });
     this.setState({
       visible: false
     });
@@ -54,11 +74,12 @@ class Admin_user extends React.Component {
       visible: true
     });
   };
+
   render() {
     const columns = [
       {
         title: "用户姓名",
-        dataIndex: "username"
+        dataIndex: "userName"
       },
       {
         title: "手机号码",
@@ -66,7 +87,15 @@ class Admin_user extends React.Component {
       },
       {
         title: "用户身份",
-        dataIndex: "number"
+        dataIndex: "",
+        render: (record, line) => {
+          console.log(record);
+          if (line.power == 1) {
+            return <div>快递员</div>;
+          } else if (line.power == 0) {
+            return <div>用户</div>;
+          }
+        }
       },
       {
         title: "修改",
@@ -105,6 +134,7 @@ class Admin_user extends React.Component {
         name: record.name
       })
     };
+    console.log(this.props.admin_user.userlist);
 
     return (
       <div>
@@ -114,27 +144,35 @@ class Admin_user extends React.Component {
           onOk={this.handleOk}
           onCancel={this.handleCancel}
         >
-          <FormItem {...formItemLayout} label="姓名:">
-            <Input
-              placeholder="姓名"
-              value={this.props.admin_user.username} // model层的state必须先定义
-              onChange={value => this.changeValue(value, "username")}
-            />
-          </FormItem>
           <FormItem {...formItemLayout} label="手机号码:">
             <Input
               placeholder="手机号码"
-                value={this.props.admin_user.phoneNumber}
+              value={this.props.admin_user.phoneNumber}
               onChange={value => this.changeValue(value, "phoneNumber")}
+              disabled="true"
+
             />
           </FormItem>
-          <FormItem {...formItemLayout} label="用户身份:">
+          <FormItem {...formItemLayout} label="姓名:">
             <Input
-              placeholder="快递单号"
-              //     value={this.props.admin_user.number}
-              onChange={value => this.changeValue(value, "number")}
+              placeholder="姓名"
+              value={this.props.admin_user.userName} // model层的state必须先定义
+              onChange={value => this.changeValue(value, "userName")}
             />
           </FormItem>
+
+          <div>
+            <FormItem {...formItemLayout} label="用户身份:">
+              <Select
+                defaultValue="lucy"
+                style={{ width: 120 }}
+                onChange={this.handleChange}
+              >
+                <Option value="jack">快递员</Option>
+                <Option value="lucy">用户</Option>
+              </Select>
+            </FormItem>
+          </div>
         </Modal>
         <Table
           rowSelection={rowSelection}
