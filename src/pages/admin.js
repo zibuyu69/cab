@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from "dva";
-import { Menu, Icon } from "antd";
+import { Menu, Icon,Button } from "antd";
 import Admin_mail from "./admin_mail";
 import Admin_box from "./admin_box";
 import Admin_log from "./admin_log";
@@ -13,6 +13,11 @@ const MenuItemGroup = Menu.ItemGroup;
 let fuck = null;
 fuck = <Admin_mail />;
 class admin extends React.Component {
+  routerGo = type => {
+    if (type === "return") {
+      router.push("/");
+    }
+  };
   state = {
     current: "mail"
   };
@@ -23,12 +28,19 @@ class admin extends React.Component {
       this.props.dispatch({
         type: "admin_box/getALL",
         payload: {
-          pageNum:1,
+          pageNum:10,
           pageSize:5
         }
       });
     } else if (e.key == "mail") {
       fuck = <Admin_mail />;
+      this.props.dispatch({
+        type: "admin_mail/getList",
+        payload: {
+          pageNum:1,
+          pageSize:5
+        }
+      });
     } else if (e.key == "log") {
       fuck = <Admin_log />;
     } else if (e.key == "user") {
@@ -54,6 +66,7 @@ class admin extends React.Component {
         style={{ padding: "60px 12%", height: windowHight - 60 }}
         className="bac3_img"
       >
+
         <Menu
           onClick={this.handleClick}
           selectedKeys={[this.state.current]}
@@ -70,8 +83,16 @@ class admin extends React.Component {
           </Menu.Item>
           <Menu.Item key="log">
             <Icon type="calendar" />日志
+
           </Menu.Item>
-        
+          <Button
+            type="primary"
+            className="button_margin"
+            onClick={() => this.routerGo("return")}
+            style={{float:"right",marginTop:"5px",marginRight:"5px"}}
+          >
+            退出
+          </Button>
 
         </Menu>
         {fuck}

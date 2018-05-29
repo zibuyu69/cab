@@ -9,7 +9,14 @@ const FormItem = Form.Item;
 class Admin_user extends React.Component {
   handleChange = value => {
     console.log(`selected ${value}`);
-  };
+
+      this.props.dispatch({
+        type: "admin_user/save",
+        jb: {
+          power:value
+        }
+      });
+    }
   //修改框中的数据即使更改
   changeValue = (value, type) => {
     console.log(value.target.value);
@@ -164,12 +171,11 @@ class Admin_user extends React.Component {
           <div>
             <FormItem {...formItemLayout} label="用户身份:">
               <Select
-                defaultValue="lucy"
                 style={{ width: 120 }}
                 onChange={this.handleChange}
               >
-                <Option value="jack">快递员</Option>
-                <Option value="lucy">用户</Option>
+                <Option value="1">快递员</Option>
+                <Option value="0">用户</Option>
               </Select>
             </FormItem>
           </div>

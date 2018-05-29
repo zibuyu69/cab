@@ -17,22 +17,39 @@ class Admin_mail extends React.Component {
         }
       });
     }
-    if (type === "phoneNumber") {
+    if (type === "phone_number") {
       this.props.dispatch({
         type: "admin_mail/changeValue",
         payload: {
-          phoneNumber: value.target.value
+          phone_number: value.target.value
         }
       });
     }
-    if (type === "number") {
+    if (type === "pa_no") {
       this.props.dispatch({
         type: "admin_mail/changeValue",
         payload: {
-          number: value.target.value
+          pa_no: value.target.value
         }
       });
     }
+  };
+  handleOk = () => {
+    console.log(this.props.admin_mail);
+    let price = {};
+    price.user_id = this.props.admin_mail.pa_id;
+    price.username = this.props.admin_mail.username;
+    price.phone_number = this.props.admin_mail.phone_number;
+    price.pa_no = this.props.admin_mail.pa_no;
+
+    console.log(price);
+    this.props.dispatch({
+      type: "admin_mail/updata",
+      payload: price
+    });
+    this.setState({
+      visible: false
+    });
   };
 //默认修改框不可见
   state = { visible: false };
@@ -59,7 +76,7 @@ class Admin_mail extends React.Component {
     const columns = [
       {
         title: "快递单号",
-        dataIndex: "number"
+        dataIndex: "pa_no"
       },
       {
         title: "用户姓名",
@@ -67,7 +84,7 @@ class Admin_mail extends React.Component {
       },
       {
         title: "手机号码",
-        dataIndex: "phoneNumber"
+        dataIndex: "phone_number"
       },
 
       {
@@ -128,15 +145,15 @@ class Admin_mail extends React.Component {
           <FormItem {...formItemLayout} label="手机号码:">
             <Input
               placeholder="手机号码"
-              value={this.props.admin_mail.phoneNumber}
-              onChange={value => this.changeValue(value, "phoneNumber")}
+              value={this.props.admin_mail.phone_number}
+              onChange={value => this.changeValue(value, "phone_number")}
             />
           </FormItem>
           <FormItem {...formItemLayout} label="快递单号:">
             <Input
               placeholder="快递单号"
-               value={this.props.admin_mail.number}
-              onChange={value => this.changeValue(value, "number")}
+               value={this.props.admin_mail.pa_no}
+              onChange={value => this.changeValue(value, "pa_no")}
             />
           </FormItem>
 

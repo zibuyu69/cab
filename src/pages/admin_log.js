@@ -6,16 +6,16 @@ class Admin_box extends React.Component {
   render() {
     const columns = [
       {
-        title: "用户姓名3",
+        title: "用户姓名",
         dataIndex: "username",
       },
       {
         title: "手机号码",
-        dataIndex: "phoneNumber"
+        dataIndex: "phone_number"
       },
       {
         title: "快递单号",
-        dataIndex: "number"
+        dataIndex: "pa_no"
       },
       {
         title: "存入时间",

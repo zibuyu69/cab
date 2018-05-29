@@ -1,5 +1,8 @@
 import { message } from "antd";
-import { getList, update, pickup } from "../services/admin_mail";
+import { getList } from "../services/pickup";
+import { getALL, updateUser } from "../services/admin_user";
+
+
 
 export default {
   //命名空间
@@ -34,26 +37,42 @@ export default {
         jb: payload
       });
     },
-    *getList({ payload }, { call, put }) {
-      console.log(payload);
-      // const backData = yield call(pickup, payload);
-      const backData = {
-        data: {
-          status: 200,
-          data: [
-            {
-              username: "李",
-              phoneNumber:"11123",
-              number:"44555"
-            }
-          ]
-        }
-      };
+    *getALL({ payload }, { call, put }) {
+      const backData = yield call(getALL, payload);
       if (backData && backData.data.status === 200) {
         yield put({
           type: "save",
           jb: {
             userlist: backData.data.data
+          }
+        });
+      } else {
+        message.error("ERROR");
+      }
+    },
+    *updata({ payload }, { call, put }) {
+      console.log(payload);
+      const backData = yield call(updateUser, payload);
+      if (backData && backData.data.status === 200) {
+        yield put({
+          type: "getALL",
+          payload: {
+            pageNum:1,
+            pageSize:5
+          }
+        });
+      } else {
+        message.error("ERROR");
+      };
+    },
+    *getList({ payload }, { call, put }) {
+      console.log(payload);
+     const backData = yield call(getList, payload);
+      if (backData && backData.data.status === 200) {
+        yield put({
+          type: "save",
+          jb: {
+            userlist: backData.data.data.data
           }
         });
       } else {

@@ -1,8 +1,5 @@
-import { addBlog, getUserById } from "../services/index"; // 引入了services
-import { getUserBySession } from "../services/common";
 import { message } from "antd";
 import router from "umi/router";
-import { getBlogs, find } from "../services/getBlogs"; // 引入了services
 import { getList, update, pickup } from "../services/pickup";
 
 export default {
@@ -75,7 +72,6 @@ export default {
     *getList({ payload }, { call, put }) {
       console.log(payload);
       const backData = yield call(getList, payload);
-
       if (
         backData &&
         backData.data.status === 200 &&
