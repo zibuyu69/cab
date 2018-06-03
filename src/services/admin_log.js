@@ -1,7 +1,7 @@
 import request from "../utils/request";
 
-export function admin_log(params) {
-  return request("/cab/admin_log", {
+export function getList(params) {
+  return request("/cab/getLogs", {
     method: "POST",
     body: JSON.stringify(params),
   });

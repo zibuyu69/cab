@@ -1,5 +1,5 @@
 import React from "react";
-import { Form, Modal, Button, Input, Table,Steps } from "antd";
+import { Form, Modal, Button, Input, Table, Steps } from "antd";
 import { connect } from "dva";
 import router from "umi/router";
 
@@ -195,16 +195,28 @@ class Index extends React.Component {
       }
     };
     return (
-
       <div
         style={{ padding: "30px 3%", height: windowHight - 60 }}
         className="bac1_img"
       >
-        <Steps direction="vertical" current={2} style={{display:"inline-block", width:"20%",float:"left", marginTop:"60px",marginRight:"50px"}}>
-        <Step title="登录" description="请输入您的登录账号和密码" />
-        <Step title="填写信息" description="请填写需要存入快递的信息或者选取需要取出的" />
-        <Step title="管理" description="进行快递信息的管理" />
-      </Steps>
+        <Steps
+          direction="vertical"
+          current={2}
+          style={{
+            display: "inline-block",
+            width: "20%",
+            float: "left",
+            marginTop: "60px",
+            marginRight: "50px"
+          }}
+        >
+          <Step title="登录" description="请输入您的登录账号和密码" />
+          <Step
+            title="填写信息"
+            description="请填写需要存入快递的信息或者选取需要取出的"
+          />
+          <Step title="管理" description="进行快递信息的管理" />
+        </Steps>
         <Modal
           title="修改列表"
           visible={this.state.visible}
@@ -253,7 +265,7 @@ class Index extends React.Component {
         </div>
         <br />
         <Table
-           style={{display:"inline-block", width:"70%",}}
+          style={{ display: "inline-block", width: "70%" }}
           rowSelection={rowSelection}
           columns={columns}
           pagination={this.props.find.listPagination}
@@ -280,7 +292,6 @@ class Index extends React.Component {
           </Button>
         </div>
       </div>
-
     );
   }
 }

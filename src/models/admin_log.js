@@ -7,6 +7,10 @@ export default {
   state: {
     list: [],
     userlist: [],
+    username: "",
+    number: "",
+    phoneNumber: "",
+
     // 表格配置项
     listPagination: {
       current: 1,
@@ -23,24 +27,22 @@ export default {
   effects: {
     *getList({ payload }, { call, put }) {
       console.log(payload);
-      // const backData = yield call(pickup, payload);
-      const backData = {
-        data: {
-          status: 200,
-          data: [
-            {
-              username: "李",
-              phoneNumber:"11123",
-              number:"44555"
-            }
-          ]
-        }
-      };
+      const backData = yield call(getList, payload);
+      console.log(backData);
       if (backData && backData.data.status === 200) {
+        const data = backData.data.data.data;
+        console.log(data);
         yield put({
           type: "save",
           jb: {
-            userlist: backData.data.data
+            userlist: data,
+            listPagination: {
+              // 表格配置项
+              current: backData.data.data.pageInfo.pageno,
+              total: backData.data.data.pageInfo.total,
+              pageSize: backData.data.data.pageInfo.rowcount,
+              pageSizeOptions: ["10", "20", "50", "100"]
+            }
           }
         });
       } else {
@@ -56,7 +58,6 @@ export default {
           dispatch({
             type: "getList",
             payload: {
-              type: 1,
               pageNum: 1,
               pageSize: 5
             }

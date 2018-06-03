@@ -14,6 +14,7 @@ let fuck = null;
 fuck = <Admin_mail />;
 class admin extends React.Component {
   routerGo = type => {
+    console.log(type);
     if (type === "return") {
       router.push("/");
     }
@@ -37,12 +38,20 @@ class admin extends React.Component {
       this.props.dispatch({
         type: "admin_mail/getList",
         payload: {
-          pageNum:1,
-          pageSize:5
+          type: 1,
+          pageNum: 1,
+          pageSize: 5
         }
       });
     } else if (e.key == "log") {
       fuck = <Admin_log />;
+      this.props.dispatch({
+        type: "admin_log/getList",
+        payload: {
+          pageNum: 1,
+          pageSize: 5
+        }
+      });
     } else if (e.key == "user") {
       fuck = <Admin_user />;
       this.props.dispatch({
@@ -52,6 +61,8 @@ class admin extends React.Component {
           pageSize:5
         }
       });
+    } else {
+      router.push("/");
     }
     this.setState({
       current: e.key

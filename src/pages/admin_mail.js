@@ -2,10 +2,22 @@ import React from "react";
 import { connect } from "dva";
 import { Table } from "antd";
 import { Form, Modal, Button, Input, Steps } from "antd";
+
 //组件名声明
 const FormItem = Form.Item;
 //开始
 class Admin_mail extends React.Component {
+  onTableChange = pagination => {
+    console.log(pagination);
+    this.props.dispatch({
+      type: "admin_mail/getList",
+      payload: {
+        type: 1,
+        pageNum: pagination.current,
+        pageSize: pagination.pageSize
+      }
+    });
+  };
 //修改框中的数据即使更改
   changeValue = (value, type) => {
     console.log(value.target.value);
@@ -41,10 +53,13 @@ class Admin_mail extends React.Component {
     price.username = this.props.admin_mail.username;
     price.phone_number = this.props.admin_mail.phone_number;
     price.pa_no = this.props.admin_mail.pa_no;
+    price.box_no=this.props.admin_mail.box_no;
+    price.last_time=this.props.admin_mail.last_time;
+      price.pa_id=this.props.admin_mail.pa_id;
 
     console.log(price);
     this.props.dispatch({
-      type: "admin_mail/updata",
+      type: "admin_mail/changeTrue",
       payload: price
     });
     this.setState({
@@ -137,6 +152,7 @@ class Admin_mail extends React.Component {
         >
           <FormItem {...formItemLayout} label="姓名:">
             <Input
+              disabled="true"
               placeholder="姓名"
               value={this.props.admin_mail.username} // model层的state必须先定义
               onChange={value => this.changeValue(value, "username")}
@@ -162,6 +178,10 @@ class Admin_mail extends React.Component {
           rowSelection={rowSelection}
           columns={columns}
           dataSource={data}
+          onChange={this.onTableChange}
+          pagination={this.props.admin_mail.listPagination}
+
+
         />
       </div>
     );
