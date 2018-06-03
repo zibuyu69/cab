@@ -21,7 +21,7 @@ class Index extends React.Component {
     return (
 
       <div style={{ padding: "60px 12%",height:windowHight-60 }} className="bac_img">
-      
+
         <Row>
           <Col  md={9} >
           <center><Button type="primary" className="button" onClick={()=>this.routerGo('storage')}>存件</Button></center>
