@@ -55,7 +55,7 @@ public class UserServiceImpl implements UserService {
             }
             orderbyStr = orderbyBuffer.substring(0, orderbyBuffer.length() - 1);
         }else{
-            orderbyStr = " ";
+            orderbyStr = "";
         }
         List<User> list = userMapper.getAllUsers(queryMap,webPage.getPageno(),webPage.getRowcount(),orderbyStr);
         if (list == null || list.size() == 0) {
@@ -68,6 +68,8 @@ public class UserServiceImpl implements UserService {
             UserDTO user1 = new UserDTO();
             user1.setUserId(user.getUser_id());
             user1.setUserName(user.getUsername());
+            user1.setPower(user.getPower());
+            user1.setPhoneNumber(user.getPhone_number());
             users.add(user1);
         }
         return users;
@@ -88,8 +90,10 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public boolean updateUser(User user,String id) {
-        User updateUser = userMapper.getUserById(user.getUser_id());
-        return userMapper.updateUser(updateUser);
+      User updateUser = userMapper.getUserById(user.getUser_id());
+      updateUser.setUsername(user.getUsername());
+      updateUser.setPower(user.getPower());
+      return userMapper.updateUser(updateUser);
     }
 
     @Override

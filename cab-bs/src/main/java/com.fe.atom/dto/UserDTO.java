@@ -12,6 +12,7 @@ public class UserDTO implements Serializable {
     private String userId;
     private String userName;
     private String phoneNumber;
+    private String power;
 
   public String getUserId() {
     return userId;
@@ -19,6 +20,14 @@ public class UserDTO implements Serializable {
 
   public void setUserId(String userId) {
     this.userId = userId;
+  }
+
+  public String getPower() {
+    return power;
+  }
+
+  public void setPower(String power) {
+    this.power = power;
   }
 
   public String getUserName() {

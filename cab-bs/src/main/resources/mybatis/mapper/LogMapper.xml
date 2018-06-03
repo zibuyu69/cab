@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fe.atom.mapper.LogMapper">
+    <sql id="Base_Column_List" >
+        log_id,log_type,user_name,phone_number,pa_no,box_no,log_date
+    </sql>
+
+  <select id="getAllLogNumber" resultType="int" >
+    SELECT
+    count(*)
+    FROM cab_log
+  </select>
+    <select id="getAllLog" resultType="com.fe.atom.domain.Log" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM cab_log
+    </select>
+    <insert id="insertLog" parameterType="Log">
+       INSERT  INTO cab_log (log_id,log_type,user_name,phone_number,pa_no,box_no,log_date ) VALUES (#{log_id},#{log_type},#{user_name},#{phone_number},#{pa_no},#{box_no},#{log_date})
+    </insert>
+</mapper>

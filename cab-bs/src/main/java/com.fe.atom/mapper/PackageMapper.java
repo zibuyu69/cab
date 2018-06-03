@@ -19,6 +19,10 @@ public interface PackageMapper {
 
   Package getPackageByBoxId(String box_no);
 
+  Package getPackageById(String id);
+
+  Package getPackageByPaNo(String id);
+
   boolean deletePackages(List<String> ids);
 
   boolean update(Package packages);

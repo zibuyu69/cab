@@ -48,6 +48,18 @@
     FROM cab_package where box_no = (#{box_no})
   </select>
 
+  <select id="getPackageById" resultType="Package" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cab_package where pa_id = (#{id})
+  </select>
+
+  <select id="getPackageByPaNo" resultType="Package" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM cab_package where pa_no = (#{id})
+  </select>
+
   <delete id="deletePackages" parameterType="java.util.ArrayList">
     DELETE  FROM cab_package <where>
     pa_no in(

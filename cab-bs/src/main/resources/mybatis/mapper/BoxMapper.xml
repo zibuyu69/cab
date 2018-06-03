@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fe.atom.mapper.BoxMapper">
+    <sql id="Base_Column_List" >
+        box_id,box_no,box_type
+    </sql>
+    <select id="getBoxes" resultType="com.fe.atom.domain.Box" >
+        SELECT
+        <include refid="Base_Column_List" />
+        FROM cab_box
+    </select>
+
+  <update id="updateBox" parameterType="Box">
+    UPDATE cab_box SET box_type = (#{box_type}) WHERE box_id = (#{box_id})
+  </update>
+</mapper>

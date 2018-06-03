@@ -1,10 +1,12 @@
 package com.fe.atom.service.impl;
 
 import com.fe.atom.domain.Box;
+import com.fe.atom.domain.Log;
 import com.fe.atom.domain.Package;
 import com.fe.atom.domain.User;
 import com.fe.atom.dto.UserDTO;
 import com.fe.atom.func.webpage.WebPage;
+import com.fe.atom.mapper.LogMapper;
 import com.fe.atom.mapper.PackageMapper;
 import com.fe.atom.mapper.UserMapper;
 import com.fe.atom.service.PackageService;
@@ -30,6 +32,8 @@ public class PackageServiceImpl implements PackageService {
   private UserMapper userMapper;
   @Resource
   private PackageMapper packageMapper;
+  @Resource
+  private LogMapper logMapper;
   @Override
   public List<Package> queryPackages(String queryWord, WebPage webPage, String type, String phone_number, String searchValue) {
     Map<String, Object> queryMap = new HashMap<String, Object>();
@@ -112,6 +116,20 @@ public class PackageServiceImpl implements PackageService {
       // 装箱
       packages.setPa_id(id);
       packages.setLast_time(nowTime);
+
+      // 日志增加
+      String log_id = UUID.randomUUID().toString().replace("-", "");
+      // 获取现在的时间
+      Date nowTime1 = new Date(new java.util.Date().getTime());
+      Log log = new Log();
+      log.setLog_id(log_id);
+      log.setLog_date(nowTime1);
+      log.setLog_type(0);
+      log.setPa_no(packages.getPa_no());
+      log.setBox_no(packages.getBox_no());
+      log.setUser_name(packages.getUsername());
+      log.setPhone_number(packages.getPhone_number());
+      logMapper.insertLog(log);
       return packageMapper.insertPackage(packages);
     }
     return false;
@@ -129,6 +147,24 @@ public class PackageServiceImpl implements PackageService {
 
   @Override
   public boolean pickupPackage(List<String> ids) {
+    for( String id : ids) {
+      Package packageById = packageMapper.getPackageByPaNo(id);
+
+      // 增加日志
+      String log_id = UUID.randomUUID().toString().replace("-", "");
+      // 获取现在的时间
+      Date nowTime = new Date(new java.util.Date().getTime());
+      Log log = new Log();
+      log.setLog_id(log_id);
+      log.setLog_date(nowTime);
+      log.setLog_type(1);
+      log.setPa_no(packageById.getPa_no());
+      log.setBox_no(packageById.getBox_no());
+      log.setUser_name(packageById.getUsername());
+      log.setPhone_number(packageById.getPhone_number());
+      logMapper.insertLog(log);
+    }
+
     return packageMapper.deletePackages(ids);
   }
 }

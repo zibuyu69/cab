@@ -39,6 +39,6 @@
        INSERT  INTO cab_user (user_id,phone_number,password,username) VALUES (#{user_id},#{phone_number},#{password},#{username})
     </insert>
     <update id="updateUser" parameterType="User">
-        UPDATE cab_user SET password = (#{password}), score = (#{score}), permission = (#{permission}), last_login_date = (#{last_login_date})  WHERE user_id = (#{user_id})
+        UPDATE cab_user SET username = (#{username}), power = (#{power})  WHERE user_id = (#{user_id})
     </update>
 </mapper>

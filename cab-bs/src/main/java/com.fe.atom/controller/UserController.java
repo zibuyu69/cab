@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @classDesc: User Controller
@@ -81,14 +82,13 @@ public class UserController {
         return ServerResponse.createBySuccess(userVo);
     }
     @PostMapping("/getUsers")
-    public ServerResponse<List<UserDTO>> getUsers(String key, ParamJsonObject<Object> page) throws Exception {
-        PLOG.info("   getUsers   ————     接收到key  =>>>>  " + key);
-        PLOG.info("   getUsers   ————     接收到page =>>>>  " + page.getParams());
-        WebPage webPage = new WebPage(page);
+    public ServerResponse<List<UserDTO>> getUsers(@RequestBody Map<String,String> data) throws Exception {
+        PLOG.info("   getUsers   ————     接收到data  =>>>>  " + data);
+      WebPage webPage = new WebPage(Integer.parseInt(data.get("pageNum")),Integer.parseInt(data.get("pageSize")));
         PLOG.info("   getUsers   ————     接收到webPage =>>>>  " + webPage.getPageno() + webPage.getRowcount());
         List<UserDTO> Users = null;
         try {
-            Users = userService.queryUsers(key, webPage);
+            Users = userService.queryUsers(data.get("key"), webPage);
         } catch (Exception e) {
             return ServerResponse.createByErrorMessage(e.getMessage());
         }

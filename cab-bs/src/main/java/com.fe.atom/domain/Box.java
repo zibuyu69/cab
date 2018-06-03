@@ -15,6 +15,10 @@ public class Box {
    *  快递柜 号
    */
   private String box_no;
+  /**
+   *  快递柜 目前状态
+   */
+  private String box_type;
 
   public String getBox_id() {
     return box_id;
@@ -30,6 +34,14 @@ public class Box {
 
   public void setBox_no(String box_no) {
     this.box_no = box_no;
+  }
+
+  public String getBox_type() {
+    return box_type;
+  }
+
+  public void setBox_type(String box_type) {
+    this.box_type = box_type;
   }
 
   @Override
